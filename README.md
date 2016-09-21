@@ -1,5 +1,7 @@
 # ProjectName
 
+Class project for the Software Architecture 2016-17 Course, Polytechnic School, Universitat de Lleida
+
 ## Vision
 
 **For** buyers and sellers **who** are interested in buying and selling second hand products.
@@ -30,3 +32,6 @@ The project **ProjectName** is a second hand marketplace **that** allows users t
 ## Entities Model
 
 ![Entities Model](docs/entities.png)
+
+
+<a href="https://zenhub.com"><img src="https://cdn.rawgit.com/ZenHubIO/support/master/zenhub-badge.svg"></a>
