@@ -2,20 +2,30 @@
 
 ## Vision
 
-**For** buyers and sellers **who** are interested in buying and selling second hand products. The project ProjectName is a second hand marketplace **that** allows to: post ads, promote ads, time limit, set starting / minimum selling price, search products, comment, buy / create public offers, create public counter-offers and sell.
+**For** buyers and sellers **who** are interested in buying and selling second hand products.
+The project **ProjectName** is a second hand marketplace **that** allows users to:
 
-**Unlike** other second hand apps, our provides negotiation features (offers / counter-offers).
+* Post ads <sup>1</sup>
+* Promote ads
+* Search products
+* Private messaging
+* Buy / Buyer counter-offer (public)
+* Seller counter-offer / Sell (accept buyer counter-offer)
 
-| Seller            | Buyer             |
-| ------------      | --------------    |
-| Post ads<sup>1</sup>| Search ads        |
-| Sell              | Buy               |
-| Sell counter-offer| Buy counter-offer |
-| Private message   | Private message   |
-| Promote ad        | Wish              |
-|                   | Rate purchase     |
+**Unlike** other second hand apps, our project provides negotiation features (counter-offers).
 
-<sup>1</sup>: time limit, min. price, price, seller, product type, location.
+## Features per Stakeholder
+
+| Seller                  | Buyer                  |
+| ------------------------| -----------------------|
+| Post ad <sup>1</sup>    | Search ads             |
+| Seller counter-offer    | Buy                    |
+| Sell                    | Buyer counter-offer    |
+| Private message         | Private message        |
+| Promote ad              | Add ad to wishlist     |
+|                         | Rate purchase          |
+
+<sup>1</sup> Including price, time limit, min. price, product type, location...
 
 ## Entities Model
 
