@@ -4,6 +4,6 @@ Feature: Buyer Counter-Offer
   I want to propose a new lower price
 
   Scenario: Create advertisement
-    When I post a new buyer counter offer with a lower price value 100.0
-    Then A counter-offer id has been generated
-    And There is a new buyer counter offer with a lower price value 100.0
+    When I post a new buyer counter offer with a lower price value "lower price"
+    Then The status is 201
+    And There is a new buyer counter offer with a lower price value "lower price"
