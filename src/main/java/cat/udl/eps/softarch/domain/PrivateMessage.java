@@ -27,6 +27,8 @@ public class PrivateMessage {
     @NotBlank(message = "Destination cannot be blank")
     private String destination;
 
+    public void setId(Long id) { this.id = id;}
+
     public String getTitle() {
         return title;
     }
@@ -47,6 +49,5 @@ public class PrivateMessage {
     public String getDestination() {
     return destination;
 }
-
 }
 
