@@ -5,5 +5,5 @@ Feature: Buyer Counter-Offer
 
   Scenario: Create advertisement
     When I post a new buyer counter offer with a lower price value "lower price"
-    Then The status is 201
+    Then A counter-offer id has been generated
     And There is a new buyer counter offer with a lower price value "lower price"
