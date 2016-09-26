@@ -20,6 +20,15 @@ public class Advertisement {
     @NotBlank(message = "Title cannot be blank")
     private String title;
 
+    @NotBlank(message = "Keywords cannot be blank")
+    private String keyWords;
+
+    public String getKeyWords(){ return keyWords;}
+
+    public void setKeyWords(String keyWords){
+        this.keyWords = keyWords;
+    }
+
     public String getTitle() {
         return title;
     }
