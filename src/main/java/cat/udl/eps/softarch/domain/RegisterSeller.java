@@ -14,7 +14,7 @@ import javax.persistence.Id;
 public class RegisterSeller {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @NotBlank(message = "Name cannot be blank")
     private String name;
@@ -42,10 +42,20 @@ public class RegisterSeller {
     }
 
     public String getPassword() {
+
         return password;
     }
 
     public void setPassword(String password) {
+
         this.password = password;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
