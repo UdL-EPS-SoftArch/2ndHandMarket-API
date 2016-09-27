@@ -3,7 +3,7 @@ package cat.udl.eps.softarch.domain;
 /**
  * Created by xavier on 26/09/16.
  */
-public class BuyerCounterOffer extends CounterOffer {
+public class BuyerOffer extends Offer {
     @Override
     public void setValue(float value){
         if (value >= this.getValue()){
