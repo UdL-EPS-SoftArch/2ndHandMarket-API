@@ -1,4 +1,4 @@
-Feature: Post Advertisement
+Feature: Create Seller
   In order to register a user
   As a seller
   I want to create a user with the seller propieties
