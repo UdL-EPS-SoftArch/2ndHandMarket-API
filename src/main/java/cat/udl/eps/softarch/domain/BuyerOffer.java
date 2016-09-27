@@ -3,61 +3,27 @@ package cat.udl.eps.softarch.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import java.time.ZonedDateTime;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 /**
- * Created by julio on 23/11/16.
+ * Created by xavier on 26/09/16.
  */
 
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
-public class BuyerOffer extends UriEntity{
-
-
-    /*@GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;*/
-
-    //@NotBlank(message = "The offer cannot be null")
+public class BuyerCounterOffer extends Offer {
 
     @JsonIdentityReference(alwaysAsId=true)
-    @ManyToOne
-    private Advertisement advert;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private ZonedDateTime published;
-    @ManyToOne
-    private User agent;
-    private float value = 0;
+    @OneToOne
+    private SellerOffer respondsTo;
 
-    public float getValue() {
-        return value;
+    public SellerOffer getRespondsTo(){
+        return respondsTo;
     }
 
-    public void setValue(float value) {
-        this.value = value;
-    }
-
-    public Advertisement getAdvertisement(){
-        return advert;
-    }
-
-    public void setAdverttisement(Advertisement advert){
-        this.advert = advert;
-    }
-
-    public User getBuyer(){
-        return agent;
-    }
-
-    public void setBuyer(User agent){
-        this.agent = agent;
-    }
-
-    public ZonedDateTime getDate(){
-        System.out.println(published);
-        return published;
+    public void setRespondsTo(SellerOffer respondsTo){
+        this.respondsTo = respondsTo;
     }
 }
