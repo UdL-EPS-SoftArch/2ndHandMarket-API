@@ -12,13 +12,13 @@ import javax.persistence.Id;
  */
 
 @Entity
-public class buyerCounterOffer {
+public class SellerCounterOffer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
     @NotBlank(message = "value cannot be null")
+
+    private long id;
     private float value;
 
     public float getValue() {
@@ -26,6 +26,10 @@ public class buyerCounterOffer {
     }
 
     public void setValue(float value) {
-        this.value = value;
+        if (this.value>value){
+            System.out.println("The new seller offer must be lower than the stablished price");
+        } else{
+            this.value = value;
+        }
     }
 }
