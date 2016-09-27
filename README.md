@@ -2,6 +2,8 @@
 
 Class project for the Software Architecture 2016-17 Course, Polytechnic School, Universitat de Lleida
 
+[![Build Status](https://travis-ci.org/UdL-EPS-SoftArch/softarch-1617-server.svg?branch=master)](https://travis-ci.org/UdL-EPS-SoftArch/softarch-1617-server/branches) [![GetBadges Game](https://udl-eps-softarch-softarch-1617-server.getbadges.io/shield/company/udl-eps-softarch-softarch-1617-server)](https://udl-eps-softarch-softarch-1617-server.getbadges.io/?ref=shield-game) <a href="https://zenhub.com"><img src="https://cdn.rawgit.com/ZenHubIO/support/master/zenhub-badge.svg"></a>
+
 ## Vision
 
 **For** buyers and sellers **who** are interested in buying and selling second hand products.
@@ -32,6 +34,3 @@ The project **ProjectName** is a second hand marketplace **that** allows users t
 ## Entities Model
 
 ![Entities Model](docs/entities.png)
-
-
-<a href="https://zenhub.com"><img src="https://cdn.rawgit.com/ZenHubIO/support/master/zenhub-badge.svg"></a>
