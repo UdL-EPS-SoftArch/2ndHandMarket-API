@@ -3,9 +3,12 @@ package cat.udl.eps.softarch.steps;
 import cat.udl.eps.softarch.domain.Advertisement;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.springframework.util.CollectionUtils;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -16,13 +19,15 @@ public class SearchAdvertisementStepDefs {
     private Advertisement advert = new Advertisement();
 
     @When("^I search an advertisement with the keyWord \"([^\"]*)\"")
-    public void SearchAdvertisement(String keyWords) throws Throwable{
-        advert.setKeyWords(keyWords);
+    public void SearchAdvertisement(String keyword) throws Throwable{
+        Set<String> tags = new HashSet<>();
+        tags.add(keyword);
+        advert.setTags(tags);
 
     }
 
     @Then("^There is an advertisement with keyWord \"([^\"]*)\"$")
     public void thereIsAnAdvertisementWithKeyWord(String keyWord) throws Throwable {
-        assertThat(advert.getKeyWords(),equalTo(keyWord));
+        assertTrue(CollectionUtils.containsInstance(advert.getTags(), keyWord));
     }
 }
