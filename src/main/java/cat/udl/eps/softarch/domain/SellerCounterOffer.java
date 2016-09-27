@@ -1,25 +1,35 @@
 package cat.udl.eps.softarch.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
- * Created by julio on 28/09/16.
+ * Created by julio on 22/09/16..
  */
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
-public class SellerCounterOffer extends SellerOffer {
+public class SellerCounterOffer {
 
-    @JsonIdentityReference(alwaysAsId=true)
-    @OneToOne
-    private BuyerCounterOffer respondsTo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotBlank(message = "value cannot be null")
 
-    public BuyerCounterOffer getRespondsTo(){ return respondsTo; }
+    private long id;
+    private float value;
 
-    public void setRespondsTo(BuyerCounterOffer respondsTo){ this.respondsTo = respondsTo; }
+    public float getValue() {
+        return value;
+    }
 
+    public void setValue(float value) {
+        if (this.value>value){
+            System.out.println("The new seller offer must be lower than the stablished price");
+        } else{
+            this.value = value;
+        }
+    }
 }
