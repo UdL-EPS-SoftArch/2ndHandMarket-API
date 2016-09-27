@@ -12,7 +12,7 @@ import javax.persistence.Id;
  */
 
 @Entity
-public class CounterOffer{
+public class Offer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
