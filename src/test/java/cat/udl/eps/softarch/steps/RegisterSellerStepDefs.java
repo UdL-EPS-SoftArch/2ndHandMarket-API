@@ -27,11 +27,11 @@ import java.util.Random;
 public class RegisterSellerStepDefs {
 
     private RegisterSeller seller;
-    private ResultActions result;
+
 
     @When("^I create a seller with name \"([^\"]*)\" and mail \"([^\"]*)\" and password \"([^\"]*)\"$")
     public void iCreateASellerWithNameAndMailAndPassword(String name, String mail, String password) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+
         seller = new RegisterSeller();
         seller.setName(name);
         seller.setMail(mail);
@@ -39,7 +39,7 @@ public class RegisterSellerStepDefs {
     }
     @Then("^An id is generated for this seller$")
     public void anIdIsGeneratedForThisSeller() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+
         Random randomGenerator = new Random();
         long randomId = randomGenerator.nextInt(100);
         seller.setId(randomId);
@@ -47,18 +47,18 @@ public class RegisterSellerStepDefs {
 
     @And("^There is a seller with name \"([^\"]*)\"$")
     public void thereIsASellerWithName(String nameSeller) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+
         seller.getName().equals(nameSeller);
     }
 
     @And("^There is a seller with mail \"([^\"]*)\"$")
     public void thereIsASellerWithMail(String mailSeller) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+
         seller.getMail().equals(mailSeller);    }
 
     @And("^There is a seller with password \"([^\"]*)\"$")
-    public void andThereIsASellerWithPassword(String passwordSeller) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    public void andThereIsASellerWithPassword(String passwordSeller) throws Throwable{
+
         seller.getPassword().equals(passwordSeller);
     }
 
