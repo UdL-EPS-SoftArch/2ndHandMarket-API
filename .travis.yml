@@ -1,0 +1,13 @@
+language: java
+jdk:
+- oraclejdk8
+branches:
+  only:
+  - master
+notifications:
+  slack:
+    secure: iXp+L4yDiP6TAghjQV0kKereZ2TY0RVMYBo5S+v531Elm8oqvFdk8sKOEAItKSnWfFYnmzdXg1Z03F1w02KeYRk5cxRJgmD3mXwkfHoko0gLlODA6KG8WXLmLESx07pq+14Bsh7VzpcUgijW8siUiioKEcbjJkJ955NaAWeVQVRvW/dtdy9h/BRwOoyX3rlUOta23jsCrLMB0ONHzo9Yy0YH74Fh7CRe7fBW53h3NBX19rKA2oEeKb5EnjG/qvxXerXwDAm40gPY2VCPfq89K1ERXdZuxTodiw95EXX+yiBlO4rT500OFQ5EMYLRabMb7c+HNel3+RllZa0q8h+S+daf3bJzUPtp+Zb2+BCEOccYK2cj83KNCOfOENVxKYva5t8LTKNDfwule8SL3AyDvKdCnBPVedEIOJiZOTdI9VzpY0eyyB5a967dEYOL2MmuMN+yl60vFuC21iGn69xaVAnSa5WtGVXZtSNwOEwKOkuTqTenooOABgGh/gVjD1yJhj6LJMWVxEk7B+RHwC49VteI5qUV5n7RD0Q/ifnjV91yoODE56un2IRwM9FJmqOT+t5p7ZKTx2FVSphKSE4lFuKV99cDhJotZ9YGLvYXSBDbmplq1czQuc+bFcOKF7GQVT0y2KZDr2IQyF7xZtDIH+fWuHWCPJ+zbUdvcCR8l/o=
+    on_success: change
+    on_failure: always
+  webhooks:
+    - https://udl-eps-softarch-softarch-1617-server.getbadges.io/api/app/webhook/13122f84-94d3-405a-8c59-d95bca2ed34a
