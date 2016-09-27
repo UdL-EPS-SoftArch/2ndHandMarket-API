@@ -1,14 +1,11 @@
 package cat.udl.eps.softarch.domain;
 
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import java.sql.Timestamp;
-import java.time.ZonedDateTime;
-import java.util.Date;
+import javax.persistence.Id;
 
 /**
  * Created by xavier on 22/09/16.
@@ -22,18 +19,7 @@ public class Offer {
     private Long id;
 
     @NotBlank(message = "The offer cannot be null")
-    private float value = 0;
-
-    @JsonIdentityReference(alwaysAsId=true)
-    @ManyToOne
-    private Advertisement advert;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private ZonedDateTime published;
-
-    public Long getId(){
-        return id;
-    }
+    private float value;
 
     public float getValue() {
         return value;
@@ -42,17 +28,4 @@ public class Offer {
     public void setValue(float value) {
         this.value = value;
     }
-
-   public Advertisement getAdvertisement(){
-        return advert;
-    }
-
-   public void setAdverttisement(Advertisement advert){
-       this.advert = advert;
-   }
-
-   public ZonedDateTime getData(){
-        System.out.println(published);
-        return published;
-   }
 }
