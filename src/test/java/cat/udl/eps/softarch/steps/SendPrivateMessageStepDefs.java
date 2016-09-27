@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.util.LongSummaryStatistics;
 import java.util.Random;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * Created by jap9 on 22/09/16.
  */
@@ -49,7 +51,7 @@ public class SendPrivateMessageStepDefs {
     @And("^There is a message sent with title \"([^\"]*)\"$")
     public void thereIsAMessageSentWithTitle(String titleSent) throws Throwable {
         // Write code here that turns the phrase above into concrete actions
-        message.getTitle().equals(titleSent);
+        assertThat(message.getTitle().equals(titleSent));
     }
 
 
