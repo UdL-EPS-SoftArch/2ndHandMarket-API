@@ -18,7 +18,11 @@ public class RegisterSeller {
 
     @NotBlank(message = "Name cannot be blank")
     private String name;
+
+    @NotBlank(message = "Mail cannot be blank")
     private String mail;
+
+    @NotBlank(message = "Password cannot be blank")
     private String password;
 
     public String getName() {
