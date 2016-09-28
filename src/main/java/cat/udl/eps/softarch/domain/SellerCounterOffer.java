@@ -9,6 +9,26 @@ import javax.persistence.Id;
  */
 public class SellerCounterOffer extends SellerOffer {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long sellerCounterOfferId;
+
+    private float newValue;
+
+    public long getSellerCounterOfferId() {
+        return sellerCounterOfferId;
+    }
+
+    @Override
+    public long getSellerId (){
+        return super.getSellerId();
+    }
+
+    @Override
+    public float getValue () {
+        return super.getValue();
+    }
+
     @Override
     public void setValue(float newValue){
         if (newValue <= this.getValue()){
@@ -23,30 +43,4 @@ public class SellerCounterOffer extends SellerOffer {
     public void offerAlert() {
         System.out.println("The product offer had been changed to a new value: " + getValue());
     }
-
-    /*                  If is needed a "sellerCounterOfferId"
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long sellerCounterOfferId;
-
-    public long getSellerCounterOfferId() {
-        return sellerCounterOfferId;
-    }
-
-    */
-
-    /*                  Not necessary
-
-    @Override
-    public long getSellerId (){
-        return super.getSellerId();
-    }
-
-    @Override
-    public float getValue () {
-        return super.getValue();
-    }
-
-    */
 }
