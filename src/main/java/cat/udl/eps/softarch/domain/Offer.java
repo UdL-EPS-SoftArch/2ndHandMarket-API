@@ -19,7 +19,11 @@ public class Offer {
     private Long id;
 
     @NotBlank(message = "The offer cannot be null")
-    private float value;
+    private float value = 0;
+
+    public Long getId(){
+        return id;
+    }
 
     public float getValue() {
         return value;
