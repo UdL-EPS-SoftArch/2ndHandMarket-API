@@ -1,35 +1,46 @@
 package cat.udl.eps.softarch.domain;
 
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
- * Created by julio on 22/09/16..
+ * Created by julio on 28/09/16.
  */
-
-@Entity
-public class SellerCounterOffer {
+public class SellerCounterOffer extends SellerOffer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotBlank(message = "value cannot be null")
+    private long sellerCounterOfferId;
 
-    private long id;
-    private float value;
+    private float newValue;
 
-    public float getValue() {
-        return value;
+    public long getSellerCounterOfferId() {
+        return sellerCounterOfferId;
     }
 
-    public void setValue(float value) {
-        if (this.value>value){
-            System.out.println("The new seller offer must be lower than the stablished price");
-        } else{
-            this.value = value;
+    @Override
+    public long getSellerId (){
+        return super.getSellerId();
+    }
+
+    @Override
+    public float getValue () {
+        return super.getValue();
+    }
+
+    @Override
+    public void setValue(float newValue){
+        if (newValue <= this.getValue()){
+            System.out.println("As a seller, you want to set an upper price");
         }
+        else{
+            super.setValue(newValue);
+        }
+        offerAlert();
+    }
+
+    public void offerAlert() {
+        System.out.println("The product offer had been changed to a new value: " + getValue());
     }
 }
