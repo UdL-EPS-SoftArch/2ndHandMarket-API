@@ -22,7 +22,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Objects;
 
+import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.AssertTrue;
 
 /**
@@ -52,8 +56,10 @@ public class BuyerCounterOfferStepDefs {
                 .build();
     }
 
+
     private BuyerCounterOffer buyerOffer= new BuyerCounterOffer();
     private BuyerCounterOffer buyerOffer2= new BuyerCounterOffer();
+
 
     @When("^I post a new buyer counter offer with a lower price value (\\d+\\.\\d+)$")
     public void iPostANewBuyerCounterOfferWithALowerPriceValue(float newValue) throws Throwable {
@@ -63,11 +69,13 @@ public class BuyerCounterOfferStepDefs {
 
     @Then("^A counter-offer id has been generated$")
     public void aCounterOfferIdHasBeenGenerated() throws Throwable {
-        //org.assertj.core.api.AssertFalse(buyerOffer.getId().equals(buyerOffer2.getId()));
+        Assert.assertFalse(Objects.equals(buyerOffer, buyerOffer2));
     }
 
-    @And("^There is a new buyer counter offer with a lower price value \"([^\"]*)\"$")
-    public void thereIsANewBuyerCounterOfferWithALowerPriceValue(String newValue) throws Throwable {
-        //org.assertj.core.api.AssertFalse(buyerOffer.getId().equals(null));
+    @And("^There is a new buyer counter offer with a lower price value (\\d+\\.\\d+)$")
+    public void thereIsANewBuyerCounterOfferWithALowerPriceValue(float newValue) throws Throwable {
+        Assert.assertFalse(Objects.equals(buyerOffer, null));
+        buyerOffer2.setValue(newValue);
+        Assert.assertTrue(buyerOffer2.getValue() == newValue);
     }
 }
