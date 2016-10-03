@@ -1,4 +1,4 @@
-Feature: SellerCounterOffer
+Feature: Seller Counter-Offer
   In order to sell the product at best price
   As a seller
   I want to up the offer
