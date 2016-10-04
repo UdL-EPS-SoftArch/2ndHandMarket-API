@@ -12,7 +12,6 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
-import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,9 +31,12 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.xml.bind.DatatypeConverter;
-
 import java.net.URLConnection;
+import java.time.ZonedDateTime;
 
+import static org.hamcrest.Matchers.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -60,12 +63,26 @@ public class AddAdPictureStepdefs {
     private ResultActions result;
 
     private Advertisement advertisement;
+    private String currentUsername;
+    private String currentPassword;
 
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(this.wac)
+                .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
+    }
+
+    @Given("^I login as \"([^\"]*)\" with password \"([^\"]*)\"$")
+    public void iLoginAsWithPassword(String username, String password) throws Throwable {
+        this.currentUsername = username;
+        this.currentPassword = password;
+    }
+
+    @Given("^I'm not logged in$")
+    public void iMNotLoggedIn() throws Throwable {
+        this.currentUsername = this.currentPassword = null;
     }
 
     @Given("^There is an existing advertisement with title \"([^\"]*)\" and price (\\d+\\.\\d+)$")
@@ -84,7 +101,7 @@ public class AddAdPictureStepdefs {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         FileCopyUtils.copy(file.getInputStream(), output);
         String contentType = URLConnection.guessContentTypeFromName(filename);
-        picture.setImage("data:" + contentType + ";base64," + DatatypeConverter.printBase64Binary(output.toByteArray()));
+        picture.setContent("data:" + contentType + ";base64," + DatatypeConverter.printBase64Binary(output.toByteArray()));
         picture.setDepicts(advertisement);
         pictureRepository.save(picture);
     }
@@ -97,9 +114,10 @@ public class AddAdPictureStepdefs {
                 .andDo(print());
     }
 
-    @Then("^I get a list containing (\\d+) picture$")
+    @Then("^I get a list containing (\\d+) picture(?:s)?$")
     public void iGetAListContainingPicture(int count) throws Throwable {
-        result.andExpect(jsonPath("$._embedded.pictures", Matchers.hasSize(count)));
+        result
+            .andExpect(jsonPath("$._embedded.pictures", hasSize(count)));
     }
 
     @When("^I add a picture with filename \"([^\"]*)\" of the previous advertisement$")
@@ -109,11 +127,32 @@ public class AddAdPictureStepdefs {
         picture.setDepicts(advertisement);
         String message = mapper.writeValueAsString(picture);
 
-        result = mockMvc.perform(post("/pictures")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(message)
-                .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated());
+        result = mockMvc.perform(
+                post("/pictures")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(message)
+                    .accept(MediaType.APPLICATION_JSON)
+                    .with( (currentUsername!=null ? httpBasic(currentUsername, currentPassword) : anonymous()) ))
+                .andDo(print());
+    }
+
+    @And("^Picture number (\\d+) has filename \"([^\"]*)\", owner \"([^\"]*)\" and was just created$")
+    public void pictureNumberHasFilenameAndOwner(int i, String filename, String owner) throws Throwable {
+        ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime justBeforeNow = ZonedDateTime.now().minusSeconds(10);
+
+        result
+            .andExpect(jsonPath("$._embedded.pictures[" + (i-1) + "].filename", is(filename)))
+            .andExpect(jsonPath("$._embedded.pictures[" + (i-1) + "].owner", is(owner)))
+            .andExpect(jsonPath("$._embedded.pictures[" + (i-1) + "].published", lessThan(now.toString())))
+            .andExpect(jsonPath("$._embedded.pictures[" + (i-1) + "].published", greaterThan(justBeforeNow.toString())));
+    }
+
+    @Then("^The error message is \"([^\"]*)\"$")
+    public void theStatusIs(String message) throws Throwable {
+        if (result.andReturn().getResponse().getContentAsString().isEmpty())
+            result.andExpect(status().reason(is(message)));
+        else
+            result.andExpect(jsonPath("$..message", hasItem(message)));
     }
 }
