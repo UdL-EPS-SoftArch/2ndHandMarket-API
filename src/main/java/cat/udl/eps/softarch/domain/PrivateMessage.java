@@ -1,22 +1,17 @@
 package cat.udl.eps.softarch.domain;
 
-/**
- * Created by jap9 on 22/09/16.
- */
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-
+/**
+ * Created by jap9 on 22/09/16.
+ */
 @Entity
-public class PrivateMessage {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
+public class PrivateMessage extends UriEntity{
 
     @NotBlank(message = "Title cannot be blank")
     private String title;
@@ -27,7 +22,6 @@ public class PrivateMessage {
     @NotBlank(message = "Destination cannot be blank")
     private String destination;
 
-    public void setId(Long id) { this.id = id;}
 
     public String getTitle() {
         return title;
