@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import java.time.ZonedDateTime;
 
 /**
  * Created by http://rhizomik.net/~roberto/
@@ -22,21 +24,35 @@ public class Picture extends UriEntity{
 
     @Lob
     @Column(length = 5 * 1024 * 1024) // 5MB
-    private String image;
+    private String content;
 
     @JsonIdentityReference(alwaysAsId=true)
     @ManyToOne
     private Advertisement depicts;
 
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    ZonedDateTime published;
+
+    private String owner;
+
+
     public String getFilename() { return filename; }
 
     public void setFilename(String filename) { this.filename = filename; }
+
+    public String getContent() { return content; }
+
+    public void setContent(String content) { this.content = content; }
 
     public Advertisement getDepicts() { return depicts; }
 
     public void setDepicts(Advertisement depicts) { this.depicts = depicts; }
 
-    public String getImage() { return image; }
+    public ZonedDateTime getPublished() { return published; }
 
-    public void setImage(String image) { this.image = image; }
+    public void setPublished(ZonedDateTime published) { this.published = published; }
+
+    public String getOwner() { return owner; }
+
+    public void setOwner(String owner) { this.owner = owner; }
 }
