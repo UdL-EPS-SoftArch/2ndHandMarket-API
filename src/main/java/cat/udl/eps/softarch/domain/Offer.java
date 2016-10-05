@@ -1,10 +1,13 @@
 package cat.udl.eps.softarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.persistence.GenerationType;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 /**
@@ -20,9 +23,13 @@ public class Offer {
 
     @NotBlank(message = "The offer cannot be null")
     private float value = 0;
+
+    @JsonIdentityReference(alwaysAsId=true)
+    @ManyToOne
     private Advertisement advert;
-    private java.util.Date date= new java.util.Date();
-    private Timestamp time = new Timestamp(date.getTime());
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime published;
 
     public Long getId(){
         return id;
@@ -38,14 +45,14 @@ public class Offer {
 
    public Advertisement getAdvertisement(){
         return advert;
+    }
+
+   public void setAdverttisement(Advertisement advert){
+       this.advert = advert;
    }
 
-    public void setAdvertisement(Advertisement advert){
-        this.advert = advert;
-    }
-
-    public Timestamp getData(){
-        System.out.println(time);
-        return time;
-    }
+   public ZonedDateTime getData(){
+        System.out.println(published);
+        return published;
+   }
 }
