@@ -20,7 +20,7 @@ public class Offer {
 
     @NotBlank(message = "The offer cannot be null")
     private float value = 0;
-    private Advertisement advert;
+    //private Advertisement advert = new Advertisement();
     private java.util.Date date= new java.util.Date();
     private Timestamp time = new Timestamp(date.getTime());
 
@@ -36,13 +36,9 @@ public class Offer {
         this.value = value;
     }
 
-   public Advertisement getAdvertisement(){
+   /*public Advertisement getAdvertisement(){
         return advert;
-   }
-
-    public void setAdvertisement(Advertisement advert){
-        this.advert = advert;
-    }
+    }*/
 
     public Timestamp getData(){
         System.out.println(time);
