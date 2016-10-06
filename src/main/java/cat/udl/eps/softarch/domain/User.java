@@ -7,9 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Created by jennifer on 28/09/16.
- */
+
 @Entity
 public class User {
 
@@ -20,7 +18,6 @@ public class User {
     private String name;
     private String lastname;
     private String username;
-    @Email
     private String email;
     private Date birthday;
     private String country;
@@ -55,7 +52,7 @@ public class User {
         return username;
     }
 
-    public void setEmail(String mail){
+    public void setEmail(String email){
         this.email=email;
     }
 
