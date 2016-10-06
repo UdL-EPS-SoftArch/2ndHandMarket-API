@@ -1,6 +1,8 @@
 package cat.udl.eps.softarch.domain;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,11 +20,16 @@ public class User {
     private String name;
     private String lastname;
     private String username;
+    @Email
     private String email;
     private Date birthday;
     private String country;
+    @NotEmpty(message = "Is necessary a password")
     private String password;
 
+    public Long getId(){
+        return id;
+    }
 
     public void setName (String name){
         this.name=name;
