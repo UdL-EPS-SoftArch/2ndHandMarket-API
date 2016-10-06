@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -16,9 +17,21 @@ import java.util.Set;
 @Entity
 public class Buyer extends User{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @ElementCollection
+    private List<String> products;
+    private int count=0;
 
 
+    public List<String> getProducts(){
+        return products;
+    }
+
+    public void setProducts(List<String> products){
+        this.products=products;
+        count+=1;
+    }
+
+    public int getCount(){
+        return count;
+    }
 }

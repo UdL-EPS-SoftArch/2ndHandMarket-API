@@ -6,7 +6,7 @@ Feature: Create Buyer
   @quick
   Scenario: Create buyer user
     When I create a buyer with name "Matthew" and lastname "Ghant"
-    Then A buyer id is unique
+    Then A buyer have id
     And I fill in name with "Matthew"
     And I fill in lastname with "Ghant"
 
