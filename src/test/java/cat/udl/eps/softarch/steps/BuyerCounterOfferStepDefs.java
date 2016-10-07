@@ -2,6 +2,7 @@ package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.Softarch1617Application;
 import cat.udl.eps.softarch.domain.BuyerCounterOffer;
+import cat.udl.eps.softarch.domain.SellerOffer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.PendingException;
 import cucumber.api.java.Before;
@@ -59,15 +60,19 @@ public class BuyerCounterOfferStepDefs {
 
     private BuyerCounterOffer buyerOffer= new BuyerCounterOffer();
     private BuyerCounterOffer buyerOffer2= new BuyerCounterOffer();
+    private String agent = new String("agent");
+    private SellerOffer sellerOffer= new SellerOffer();
 
 
     @When("^I post a new buyer counter offer with a lower price value (\\d+\\.\\d+)$")
     public void iPostANewBuyerCounterOfferWithALowerPriceValue(float newValue) throws Throwable {
         buyerOffer.setValue(110);
+        buyerOffer.setAgent(agent);
+        buyerOffer.setRespondsTo(sellerOffer);
         Assert.assertTrue(newValue < buyerOffer.getValue());
     }
 
-    @Then("^A counter-offer id has been generated$")
+    @Then("^A buyer counter-offer id has been generated$")
     public void aCounterOfferIdHasBeenGenerated() throws Throwable {
         Assert.assertFalse(Objects.equals(buyerOffer, buyerOffer2));
     }
@@ -77,5 +82,7 @@ public class BuyerCounterOfferStepDefs {
         Assert.assertFalse(Objects.equals(buyerOffer, null));
         buyerOffer2.setValue(newValue);
         Assert.assertTrue(buyerOffer2.getValue() == newValue);
+        Assert.assertTrue(buyerOffer.getAgent().equals(agent));
+        Assert.assertTrue(buyerOffer.getRespondsTo().equals(sellerOffer));
     }
 }
