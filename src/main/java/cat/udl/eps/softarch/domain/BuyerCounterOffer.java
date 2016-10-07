@@ -3,7 +3,7 @@ package cat.udl.eps.softarch.domain;
 /**
  * Created by xavier on 26/09/16.
  */
-public class BuyerCounterOffer extends Picture.Offer {
+public class BuyerCounterOffer extends Offer {
 
     private String  agent;
     private SellerOffer respondsTo;
