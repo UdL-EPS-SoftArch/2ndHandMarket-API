@@ -46,6 +46,8 @@ public class Advertisement {
     private String color;
     private Double weight;
 
+    public Long getId() { return id; }
+
     public String getTitle() {
         return title;
     }
