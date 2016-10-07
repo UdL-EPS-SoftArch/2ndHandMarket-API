@@ -1,8 +1,7 @@
 package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.Softarch1617Application;
-import cat.udl.eps.softarch.domain.BuyerCounterOffer;
-import cat.udl.eps.softarch.domain.SellerOffer;
+import cat.udl.eps.softarch.domain.SellerCounterOffer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.PendingException;
 import cucumber.api.java.Before;
@@ -31,16 +30,15 @@ import javax.validation.constraints.AssertFalse;
 import javax.validation.constraints.AssertTrue;
 
 /**
- * Created by xavier on 27/09/16.
+ * Created by ierathenz on 2/10/16.
  */
-
 
 @ContextConfiguration(
         classes = {Softarch1617Application.class}, loader = SpringBootContextLoader.class)
 @DirtiesContext
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
-public class BuyerCounterOfferStepDefs {
+public class SellerCounterOfferStepDefs {
     private static final Logger logger = LoggerFactory.getLogger(cat.udl.eps.softarch.steps.PostAdvertisementStepDefs.class);
 
     @Autowired
@@ -57,32 +55,29 @@ public class BuyerCounterOfferStepDefs {
                 .build();
     }
 
+    private SellerCounterOffer sellerOffer1 = new SellerCounterOffer();
+    private SellerCounterOffer sellerOffer2 = new SellerCounterOffer();
 
-    private BuyerCounterOffer buyerOffer= new BuyerCounterOffer();
-    private BuyerCounterOffer buyerOffer2= new BuyerCounterOffer();
-    private String agent = new String("agent");
-    private SellerOffer sellerOffer= new SellerOffer();
-
-
-    @When("^I post a new buyer counter offer with a lower price value (\\d+\\.\\d+)$")
-    public void iPostANewBuyerCounterOfferWithALowerPriceValue(float newValue) throws Throwable {
-        buyerOffer.setValue(110);
-        buyerOffer.setAgent(agent);
-        buyerOffer.setRespondsTo(sellerOffer);
-        Assert.assertTrue(newValue < buyerOffer.getValue());
+    @When("^I change the offer value to (\\d+\\.\\d+)$")
+    public void iChangeTheOfferValueTo(float newValue) throws Throwable {
+        sellerOffer1.setValue(20.5f);
+        Assert.assertTrue(newValue > sellerOffer1.getValue());
+        //throw new PendingException();
     }
 
-    @Then("^A buyer counter-offer id has been generated$")
+    @Then("^A counter-offer id has been generated$")
     public void aCounterOfferIdHasBeenGenerated() throws Throwable {
-        Assert.assertFalse(Objects.equals(buyerOffer, buyerOffer2));
+        Assert.assertFalse(Objects.equals(sellerOffer1, sellerOffer2));
+        //throw new PendingException();
     }
 
-    @And("^There is a new buyer counter offer with a lower price value (\\d+\\.\\d+)$")
-    public void thereIsANewBuyerCounterOfferWithALowerPriceValue(float newValue) throws Throwable {
-        Assert.assertFalse(Objects.equals(buyerOffer, null));
-        buyerOffer2.setValue(newValue);
-        Assert.assertTrue(buyerOffer2.getValue() == newValue);
-        Assert.assertTrue(buyerOffer.getAgent().equals(agent));
-        Assert.assertTrue(buyerOffer.getRespondsTo().equals(sellerOffer));
+    @And("^There is a new seller counter offer with an upper price value (\\d+\\.\\d+)$")
+    public void thereIsANewSellerCounterOfferWithALowerPriceValue(float newValue) throws Throwable {
+        Assert.assertFalse(Objects.equals(sellerOffer1, null));
+        sellerOffer2.setValue(newValue);
+        Assert.assertTrue(sellerOffer2.getValue() == newValue);
     }
+
 }
+
+
