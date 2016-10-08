@@ -33,4 +33,52 @@ The project **ProjectName** is a second hand marketplace **that** allows users t
 
 ## Entities Model
 
-![Entities Model](docs/entities.png)
+![Entities Model Diagram](http://g.gravizo.com/g?
+@startuml;
+class Advertisement {;
+    Seller seller;
+    List<Picture> pictures;
+    String location;
+    Time time;
+};
+Advertisement "many" -up- "1" Seller;
+Advertisement "1" -down- "many" Picture;
+class Picture;
+class User;
+class Seller extends User {;
+    List<Advertisement> sells;
+};
+class Buyer extends User {;
+    List<Advertisement> whishes;
+};
+class Purchase {;
+    Buyer purchaser;
+    Advertisement product;
+    Time time;
+};
+Purchase "many" -up- "1" Buyer;
+Purchase "0..1" -right- "1" Advertisement;
+class Offer {;
+    Advertisement about;
+    Time time;
+};
+class SellerOffer extends Offer {;
+    Seller agent;
+};
+SellerOffer "1" -left- "1" Advertisement;
+class BuyerCounterOffer extends Offer {;
+    Buyer agent;
+    SellerOffer respondsTo;
+};
+BuyerCounterOffer "1" --> "1" SellerOffer;
+class SellerCounterOffer extends SellerOffer {;
+    BuyerCounterOffer respondsTo;
+};
+SellerCounterOffer "1" --> "1" BuyerCounterOffer;
+class PrivateMessage {;
+    User sender;
+    User receiver;
+};
+PrivateMessage "many" -left- "2" User;
+@enduml
+)

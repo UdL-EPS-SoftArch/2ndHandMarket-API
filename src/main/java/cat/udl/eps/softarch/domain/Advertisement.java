@@ -1,11 +1,11 @@
 package cat.udl.eps.softarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
-import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,11 +13,8 @@ import java.util.Set;
  * Created by http://rhizomik.net/~roberto/
  */
 @Entity
-public class Advertisement {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
+public class Advertisement extends UriEntity{
 
     @NotBlank(message = "Title cannot be blank")
     private String title;
@@ -39,6 +36,9 @@ public class Advertisement {
 
     @ElementCollection
     private Set<String> tags = new HashSet<>();
+
+    @OneToMany(mappedBy = "depicts")
+    private Set<Picture> pictures = new HashSet<>();
 
     /* technical product data */
     private String category;
@@ -135,4 +135,8 @@ public class Advertisement {
     public void setWeight(Double weight) {
         this.weight = weight;
     }
+
+    public Set<Picture> getPictures() { return pictures; }
+
+    public void setPictures(Set<Picture> pictures) { this.pictures = pictures; }
 }

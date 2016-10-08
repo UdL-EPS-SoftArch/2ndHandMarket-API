@@ -34,15 +34,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 /**
  * Created by http://rhizomik.net/~roberto/
  */
 @ContextConfiguration(
         classes = {Softarch1617Application.class}, loader = SpringBootContextLoader.class)
+
 @DirtiesContext
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
+
 public class PostAdvertisementStepDefs {
     private static final Logger logger = LoggerFactory.getLogger(PostAdvertisementStepDefs.class);
 
