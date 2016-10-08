@@ -21,7 +21,7 @@ Feature: Add Advertisement Picture
     Given There is an existing advertisement with title "Selling old Spring Boot" and price 1.0
     And I'm not logged in
     When I add a picture with filename "overview.jpg" of the previous advertisement
-    Then The error message is "Full authentication is required to access this resource"
+    Then The picture error message is "Full authentication is required to access this resource"
     And I list the previous advertisement pictures
     And I get a list containing 0 pictures
 
