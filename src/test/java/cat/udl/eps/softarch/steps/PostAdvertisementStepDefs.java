@@ -5,6 +5,7 @@ import cat.udl.eps.softarch.domain.Advertisement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.hamcrest.Matchers;
@@ -14,12 +15,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -28,7 +31,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -55,11 +61,40 @@ public class PostAdvertisementStepDefs {
 
     private Advertisement ad;
 
+    private String currentUsername;
+    private String currentPassword;
+
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(this.wac)
+                .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
+    }
+
+    private RequestPostProcessor authenticate() {
+        System.out.println(currentUsername);
+        System.out.println(currentPassword);
+        return currentUsername!=null ? httpBasic(currentUsername, currentPassword) : anonymous();
+    }
+
+    @Given("^ad I login as \"([^\"]*)\" with password \"([^\"]*)\"$")
+    public void iLoginAsWithPassword(String username, String password) throws Throwable {
+        this.currentUsername = username;
+        this.currentPassword = password;
+    }
+
+    @Given("^ad I'm not logged in$")
+    public void iMNotLoggedIn() throws Throwable {
+        this.currentUsername = this.currentPassword = null;
+    }
+
+    @Then("^ad The error message is \"([^\"]*)\"$")
+    public void theStatusIs(String message) throws Throwable {
+        if (result.andReturn().getResponse().getContentAsString().isEmpty())
+            result.andExpect(status().reason(Matchers.is(message)));
+        else
+            result.andExpect(jsonPath("$..message", hasItem(message)));
     }
 
     @When("^I create a new advertisement$")
@@ -74,7 +109,8 @@ public class PostAdvertisementStepDefs {
         result = mockMvc.perform(post("/advertisements")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authenticate()))
                 .andDo(print());
     }
 
@@ -86,10 +122,12 @@ public class PostAdvertisementStepDefs {
 
         String message = mapper.writeValueAsString(ad);
 
+        System.out.println(currentUsername + " <--> " + currentPassword);
         result = mockMvc.perform(post("/advertisements")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authenticate()))
                 .andDo(print());
     }
 

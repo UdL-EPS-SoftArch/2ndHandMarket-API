@@ -3,9 +3,11 @@ package cat.udl.eps.softarch.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,11 +23,13 @@ public class Advertisement extends UriEntity{
 
     private String description;
 
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-//    private ZonedDateTime createdAt;
+    private String owner;
 
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-//    private ZonedDateTime modifiedAt;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime createdAt;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime modifiedAt;
 
     @DecimalMin(message = "Price has to be bigger than 0.01", value = "0.01")
     private Double price;
@@ -46,8 +50,6 @@ public class Advertisement extends UriEntity{
     private String color;
     private Double weight;
 
-    public Long getId() { return id; }
-
     public String getTitle() {
         return title;
     }
@@ -56,13 +58,17 @@ public class Advertisement extends UriEntity{
         return description;
     }
 
-//    public ZonedDateTime getCreatedAt() {
-//        return createdAt;
-//    }
+    public String getOwner() {
+        return owner;
+    }
 
-//    public ZonedDateTime getModifiedAt() {
-//        return modifiedAt;
-//    }
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public ZonedDateTime getModifiedAt() {
+        return modifiedAt;
+    }
 
     public Double getPrice() {
         return price;
@@ -102,6 +108,18 @@ public class Advertisement extends UriEntity{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setModifiedAt(ZonedDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
     }
 
     public void setPrice(Double price) {

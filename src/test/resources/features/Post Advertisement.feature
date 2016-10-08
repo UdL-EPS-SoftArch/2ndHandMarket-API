@@ -5,6 +5,7 @@ Feature: Post Advertisement
 
   @quick
   Scenario: Create advertisement
+    Given ad I login as "user" with password "password"
     When I post an advertisement with title "Selling old Spring Boot" and price "1.0"
     Then The status is 201
     And There is an advertisement with title "Selling old Spring Boot"
@@ -12,7 +13,8 @@ Feature: Post Advertisement
 
   @slow
   Scenario Outline: Create a valid advertisement
-    Given I create a new advertisement
+    Given ad I login as "user" with password "password"
+    And I create a new advertisement
     And I fill in title with "<title>"
     And I fill in description with "<description>"
     And I fill in price with "<price>"
@@ -42,7 +44,8 @@ Feature: Post Advertisement
 
   @slow
   Scenario Outline: Create an invalid advertisement
-    Given I create a new advertisement
+    Given ad I login as "user" with password "password"
+    And I create a new advertisement
     And I fill in title with "<title>"
     And I fill in price with "<price>"
     Then There is no advertisement
@@ -54,3 +57,12 @@ Feature: Post Advertisement
       |          | 1.1   |
       | whatever | -1    |
       | whatever | 0.00  |
+
+  @quick
+  Scenario: Authentication required error when creating an advertisement if not authenticated
+    Given ad I'm not logged in
+    And I create a new advertisement
+    And I fill in title with "ponies"
+    And I fill in price with "42"
+    And I post the advertisement
+    Then ad The error message is "Full authentication is required to access this resource"
