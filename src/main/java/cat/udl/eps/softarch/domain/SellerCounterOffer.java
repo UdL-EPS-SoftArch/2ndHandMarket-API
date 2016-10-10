@@ -1,13 +1,18 @@
 package cat.udl.eps.softarch.domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by julio on 28/09/16.
  */
+
+@Entity
 public class SellerCounterOffer extends SellerOffer {
+
+    @ManyToOne
+    private BuyerCounterOffer respondsTo;
+
+    private float newValue;
 
     @Override
     public void setValue(float newValue){
@@ -24,29 +29,12 @@ public class SellerCounterOffer extends SellerOffer {
         System.out.println("The product offer had been changed to a new value: " + getValue());
     }
 
-    /*                  If is needed a "sellerCounterOfferId"
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long sellerCounterOfferId;
-
-    public long getSellerCounterOfferId() {
-        return sellerCounterOfferId;
+    public BuyerCounterOffer getRespondsTo(){
+        return respondsTo;
     }
 
-    */
-
-    /*                  Not necessary
-
-    @Override
-    public long getSellerId (){
-        return super.getSellerId();
+    public void setRespondsTo(BuyerCounterOffer respondsTo){
+        this.respondsTo = respondsTo;
     }
 
-    @Override
-    public float getValue () {
-        return super.getValue();
-    }
-
-    */
 }

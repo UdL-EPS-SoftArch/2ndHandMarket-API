@@ -42,7 +42,7 @@ public class Offer {
 
    public Advertisement getAdvertisement(){
         return advert;
-    }
+   }
 
    public void setAdverttisement(Advertisement advert){
        this.advert = advert;

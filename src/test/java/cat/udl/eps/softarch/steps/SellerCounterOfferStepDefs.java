@@ -1,7 +1,9 @@
 package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.Softarch1617Application;
+import cat.udl.eps.softarch.domain.BuyerCounterOffer;
 import cat.udl.eps.softarch.domain.SellerCounterOffer;
+import cat.udl.eps.softarch.domain.SellerOffer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.PendingException;
 import cucumber.api.java.Before;
@@ -33,6 +35,7 @@ import javax.validation.constraints.AssertTrue;
  * Created by ierathenz on 2/10/16.
  */
 
+
 @ContextConfiguration(
         classes = {Softarch1617Application.class}, loader = SpringBootContextLoader.class)
 @DirtiesContext
@@ -57,10 +60,14 @@ public class SellerCounterOfferStepDefs {
 
     private SellerCounterOffer sellerOffer1 = new SellerCounterOffer();
     private SellerCounterOffer sellerOffer2 = new SellerCounterOffer();
+    private String agent = new String("agent");
+    private BuyerCounterOffer buyerOffer= new BuyerCounterOffer();
 
     @When("^I change the offer value to (\\d+\\.\\d+)$")
     public void iChangeTheOfferValueTo(float newValue) throws Throwable {
         sellerOffer1.setValue(20.5f);
+        sellerOffer1.setAgent(agent);
+        sellerOffer1.setRespondsTo(buyerOffer);
         Assert.assertTrue(newValue > sellerOffer1.getValue());
         //throw new PendingException();
     }
@@ -76,6 +83,8 @@ public class SellerCounterOfferStepDefs {
         Assert.assertFalse(Objects.equals(sellerOffer1, null));
         sellerOffer2.setValue(newValue);
         Assert.assertTrue(sellerOffer2.getValue() == newValue);
+        Assert.assertTrue(sellerOffer1.getAgent().equals(agent));
+        Assert.assertTrue(sellerOffer1.getRespondsTo().equals(buyerOffer));
     }
 
 }

@@ -57,12 +57,10 @@ public class BuyerCounterOfferStepDefs {
                 .build();
     }
 
-
     private BuyerCounterOffer buyerOffer= new BuyerCounterOffer();
     private BuyerCounterOffer buyerOffer2= new BuyerCounterOffer();
     private String agent = new String("agent");
     private SellerOffer sellerOffer= new SellerOffer();
-
 
     @When("^I post a new buyer counter offer with a lower price value (\\d+\\.\\d+)$")
     public void iPostANewBuyerCounterOfferWithALowerPriceValue(float newValue) throws Throwable {

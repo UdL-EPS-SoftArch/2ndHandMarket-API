@@ -1,11 +1,11 @@
 package cat.udl.eps.softarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import org.hibernate.validator.constraints.NotBlank;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
+import java.time.ZonedDateTime;
 
 /**
  * Created by julio on 22/09/16..
@@ -16,17 +16,29 @@ public class SellerOffer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long sellerId;
-
-    /*Time variable in order to know the time when
-    the offer was made*/
-    private Date date;
+    private long id;
 
     @NotBlank(message = "The offer cannot be null")
     private float value;
 
-    public long getSellerId() {
-        return sellerId;
+    /*Time variable in order to know the time when
+    the offer was made*/
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime publish_date;
+
+    /*Advertisement object in order add functionalities to tests*/
+    @JsonIdentityReference(alwaysAsId=true)
+    @ManyToOne
+    private Advertisement advert;
+    private String agent;
+
+    public String getAgent() {
+        return agent;
+    }
+
+    public void setAgent(String agent) {
+        this.agent = agent;
     }
 
     public float getValue() {
@@ -37,15 +49,24 @@ public class SellerOffer {
             this.value = value;
     }
 
-    public void setDate(Date date){
-        this.date = new Date();
+    public Advertisement getAdvertisement(){
+        return advert;
     }
 
-    public Date getDate() {
-        return date;
+    public void setAdvertisement(Advertisement advert){
+        this.advert = advert;
+    }
+
+    public void setDate(ZonedDateTime date){
+        this.publish_date = publish_date;
+    }
+
+    public ZonedDateTime getDate() {
+        return publish_date;
     }
 
     public void dateToString() {
-        System.out.println(date.toString());
+        System.out.println(publish_date.toString());
     }
 }
+
