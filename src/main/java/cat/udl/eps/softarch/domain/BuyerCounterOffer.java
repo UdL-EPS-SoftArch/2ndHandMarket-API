@@ -1,37 +1,23 @@
 package cat.udl.eps.softarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * Created by xavier on 26/09/16.
  */
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
 public class BuyerCounterOffer extends Offer {
 
-    private String  agent;
-
-    @ManyToOne
+    @JsonIdentityReference(alwaysAsId=true)
+    @OneToOne
     private SellerOffer respondsTo;
-
-    @Override
-    public void setValue(float value){
-        if (value < this.getValue()){
-            System.out.println("As a buyer, you want to set a lower price");
-        }
-        else{
-            super.setValue(value);
-        }
-    }
-
-    public String getAgent(){
-        return agent;
-    }
-
-    public void setAgent(String agent){
-        this.agent = agent;
-    }
 
     public SellerOffer getRespondsTo(){
         return respondsTo;
