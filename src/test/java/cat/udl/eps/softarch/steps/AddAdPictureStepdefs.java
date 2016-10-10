@@ -34,9 +34,8 @@ import javax.xml.bind.DatatypeConverter;
 import java.net.URLConnection;
 import java.time.ZonedDateTime;
 
+import static cat.udl.eps.softarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.anonymous;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -63,8 +62,6 @@ public class AddAdPictureStepdefs {
     private ResultActions result;
 
     private Advertisement advertisement;
-    private String currentUsername;
-    private String currentPassword;
 
     @Before
     public void setup() {
@@ -72,17 +69,6 @@ public class AddAdPictureStepdefs {
                 .webAppContextSetup(this.wac)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
-    }
-
-    @Given("^I login as \"([^\"]*)\" with password \"([^\"]*)\"$")
-    public void iLoginAsWithPassword(String username, String password) throws Throwable {
-        this.currentUsername = username;
-        this.currentPassword = password;
-    }
-
-    @Given("^I'm not logged in$")
-    public void iMNotLoggedIn() throws Throwable {
-        this.currentUsername = this.currentPassword = null;
     }
 
     @Given("^There is an existing advertisement with title \"([^\"]*)\" and price (\\d+\\.\\d+)$")
@@ -132,7 +118,7 @@ public class AddAdPictureStepdefs {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(message)
                     .accept(MediaType.APPLICATION_JSON)
-                    .with( (currentUsername!=null ? httpBasic(currentUsername, currentPassword) : anonymous()) ))
+                    .with(authenticate()))
                 .andDo(print());
     }
 
@@ -148,7 +134,7 @@ public class AddAdPictureStepdefs {
             .andExpect(jsonPath("$._embedded.pictures[" + (i-1) + "].published", greaterThan(justBeforeNow.toString())));
     }
 
-    @Then("^The error message is \"([^\"]*)\"$")
+    @Then("^The picture error message is \"([^\"]*)\"$")
     public void theStatusIs(String message) throws Throwable {
         if (result.andReturn().getResponse().getContentAsString().isEmpty())
             result.andExpect(status().reason(is(message)));

@@ -5,6 +5,7 @@ import cat.udl.eps.softarch.domain.Advertisement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.hamcrest.Matchers;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,7 +29,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static cat.udl.eps.softarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,6 +63,7 @@ public class PostAdvertisementStepDefs {
     public void setup() {
         this.mockMvc = MockMvcBuilders
                 .webAppContextSetup(this.wac)
+                .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();
     }
 
@@ -74,7 +79,8 @@ public class PostAdvertisementStepDefs {
         result = mockMvc.perform(post("/advertisements")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authenticate()))
                 .andDo(print());
     }
 
@@ -89,7 +95,8 @@ public class PostAdvertisementStepDefs {
         result = mockMvc.perform(post("/advertisements")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
-                .accept(MediaType.APPLICATION_JSON))
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authenticate()))
                 .andDo(print());
     }
 
@@ -227,5 +234,13 @@ public class PostAdvertisementStepDefs {
     private Set<String> stringTagsToSet(String tags) {
         String[] tagsList = tags.split(",");
         return new HashSet<>(Arrays.asList(tagsList));
+    }
+
+    @Then("^The advertisement error message is \"([^\"]*)\"$")
+    public void theStatusIs(String message) throws Throwable {
+        if (result.andReturn().getResponse().getContentAsString().isEmpty())
+            result.andExpect(status().reason(Matchers.is(message)));
+        else
+            result.andExpect(jsonPath("$..message", hasItem(message)));
     }
 }
