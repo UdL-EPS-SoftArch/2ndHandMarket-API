@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.Softarch1617Application;
+import cat.udl.eps.softarch.domain.BuyerCounterOffer;
 import cat.udl.eps.softarch.domain.SellerCounterOffer;
 import cat.udl.eps.softarch.domain.SellerOffer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -60,13 +61,13 @@ public class SellerCounterOfferStepDefs {
     private SellerCounterOffer sellerOffer1 = new SellerCounterOffer();
     private SellerCounterOffer sellerOffer2 = new SellerCounterOffer();
     private String agent = new String("agent");
-    private SellerOffer sellerOffer= new SellerOffer();
+    private BuyerCounterOffer buyerOffer= new BuyerCounterOffer();
 
     @When("^I change the offer value to (\\d+\\.\\d+)$")
     public void iChangeTheOfferValueTo(float newValue) throws Throwable {
         sellerOffer1.setValue(20.5f);
         sellerOffer1.setAgent(agent);
-        sellerOffer1.setRespondsTo(sellerOffer);
+        sellerOffer1.setRespondsTo(buyerOffer);
         Assert.assertTrue(newValue > sellerOffer1.getValue());
         //throw new PendingException();
     }
@@ -83,7 +84,7 @@ public class SellerCounterOfferStepDefs {
         sellerOffer2.setValue(newValue);
         Assert.assertTrue(sellerOffer2.getValue() == newValue);
         Assert.assertTrue(sellerOffer1.getAgent().equals(agent));
-        Assert.assertTrue(sellerOffer1.getRespondsTo().equals(sellerOffer));
+        Assert.assertTrue(sellerOffer1.getRespondsTo().equals(buyerOffer));
     }
 
 }

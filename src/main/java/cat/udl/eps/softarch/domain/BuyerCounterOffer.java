@@ -1,11 +1,18 @@
 package cat.udl.eps.softarch.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
 /**
  * Created by xavier on 26/09/16.
  */
+
+@Entity
 public class BuyerCounterOffer extends Offer {
 
     private String  agent;
+
+    @ManyToOne
     private SellerOffer respondsTo;
 
     @Override

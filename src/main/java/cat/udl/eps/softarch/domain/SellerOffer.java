@@ -16,7 +16,7 @@ public class SellerOffer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long sellerId;
+    private long id;
 
     @NotBlank(message = "The offer cannot be null")
     private float value;
@@ -31,9 +31,14 @@ public class SellerOffer {
     @JsonIdentityReference(alwaysAsId=true)
     @ManyToOne
     private Advertisement advert;
+    private String agent;
 
-    public long getSellerId() {
-        return sellerId;
+    public String getAgent() {
+        return agent;
+    }
+
+    public void setAgent(String agent) {
+        this.agent = agent;
     }
 
     public float getValue() {
