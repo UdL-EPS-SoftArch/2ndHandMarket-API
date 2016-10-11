@@ -21,6 +21,7 @@ public class Advertisement extends UriEntity{
     @NotBlank(message = "Title cannot be blank")
     private String title;
 
+    @Column(length=2000)
     private String description;
 
     private String owner;
