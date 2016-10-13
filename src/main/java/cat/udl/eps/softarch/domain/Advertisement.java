@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +22,8 @@ public class Advertisement extends UriEntity{
     @NotBlank(message = "Title cannot be blank")
     private String title;
 
-    @Column(length=2000)
+    @Column(length = 2000)
+    @Size(max = 2000)
     private String description;
 
     private String owner;

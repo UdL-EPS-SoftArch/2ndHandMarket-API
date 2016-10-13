@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 
 /**
@@ -21,6 +22,7 @@ public class Picture extends UriEntity{
 
     @Lob
     @Column(length = 5 * 1024 * 1024) // 5MB
+    @Size(max = 5 * 1024 * 1024) // 5MB
     private String content;
 
     @JsonIdentityReference(alwaysAsId=true)
