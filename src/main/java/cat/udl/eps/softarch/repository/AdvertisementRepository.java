@@ -9,4 +9,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  */
 @RepositoryRestResource
 public interface AdvertisementRepository extends PagingAndSortingRepository<Advertisement, Long> {
+
+    Advertisement findByTitleContaining(String title);
+
+    Advertisement findByTitle(String title);
 }
