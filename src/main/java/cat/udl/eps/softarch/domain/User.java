@@ -1,6 +1,5 @@
 package cat.udl.eps.softarch.domain;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -9,8 +8,8 @@ import java.util.Date;
 
 
 @Entity
+@Table(name = "SoftArchUser") //Avoid collision with system table User in Postgres
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
