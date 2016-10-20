@@ -39,9 +39,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @ContextConfiguration(
         classes = {Softarch1617Application.class}, loader = SpringBootContextLoader.class)
+
 @DirtiesContext
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
+
 public class PostAdvertisementStepDefs {
     private static final Logger logger = LoggerFactory.getLogger(PostAdvertisementStepDefs.class);
 

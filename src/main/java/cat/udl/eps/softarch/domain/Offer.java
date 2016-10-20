@@ -5,10 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.persistence.GenerationType;
-import java.sql.Timestamp;
 import java.time.ZonedDateTime;
-import java.util.Date;
 
 /**
  * Created by xavier on 22/09/16.
