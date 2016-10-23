@@ -1,7 +1,7 @@
 package cat.udl.eps.softarch.domain;
 
 /**
- * Created by jap9 on 22/09/16.
+ * Created by jap9 on 22/09/16. Updated 23/10/16
  */
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,14 +27,8 @@ public class PrivateMessage {
     @NotBlank(message = "Destination cannot be blank")
     private String destination;
 
-    public void setId(Long id) { this.id = id;}
-
-    public String getTitle() {
-        return title;
-    }
-    public String getBody() {
-        return body;
-    }
+    @NotBlank(message = "From cannot be blank")
+    private String sender;
 
     public void setTitle(String title) {
         this.title = title;
@@ -42,12 +36,25 @@ public class PrivateMessage {
     public void setBody(String body) {
         this.body = body;
     }
-
     public void setDestination(String destination) {
         this.destination = destination;
     }
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+    public String getBody() {
+        return body;
+    }
     public String getDestination() {
-    return destination;
-}
+        return destination;
+    }
+    public String getSender() {
+        return sender;
+    }
+
 }
 
