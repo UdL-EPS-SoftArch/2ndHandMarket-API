@@ -1,7 +1,7 @@
 package cat.udl.eps.softarch.domain;
 
 /**
- * Created by jap9 on 22/09/16. Updated 23/10/16
+ * Created by jap9 on 22/09/16. Updated 23/10/16 added "sender" field
  */
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -27,7 +27,7 @@ public class PrivateMessage {
     @NotBlank(message = "Destination cannot be blank")
     private String destination;
 
-    @NotBlank(message = "From cannot be blank")
+    @NotBlank(message = "Sender cannot be blank")
     private String sender;
 
     public void setTitle(String title) {
