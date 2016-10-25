@@ -58,12 +58,14 @@ public class SendPrivateMessageStepDefs {
                 .build();
     }
 
-    @When("^I send a private message with title \"([^\"]*)\" and body \"([^\"]*)\" to user \"([^\"]*)\"$")
-    public void iSendAPrivateMessageWithTitleAndBodyToUser(String title, String body, String destination) throws Throwable {
+    @When("^A private message with title \"([^\"]*)\" and body \"([^\"]*)\" is sent from \"([^\"]*)\" to user \"([^\"]*)\"$")
+    public void iSendAPrivateMessageWithTitleAndBodyToUser(String title, String body, String sender, String destination) throws Throwable {
 
         PrivateMessage pMessage = new PrivateMessage();
+
         pMessage.setTitle(title);
         pMessage.setBody(body);
+        pMessage.setSender(sender);
         pMessage.setDestination(destination);
 
         String message = mapper.writeValueAsString(pMessage);
@@ -75,7 +77,7 @@ public class SendPrivateMessageStepDefs {
                 .andDo(print());
     }
 
-    @And("^There is an private message with title \"([^\"]*)\"$")
+    @And("^There is a private message with title \"([^\"]*)\"$")
     public void thereIsAnPrivateMessageWithTitle(String title) throws Throwable {
         String location = result.andReturn().getResponse().getHeader("Location");
 
@@ -86,14 +88,19 @@ public class SendPrivateMessageStepDefs {
                 .andDo(print());
     }
 
-    @And("^There is an private message with body \"([^\"]*)\"$")
+    @And("^There is a private message with body \"([^\"]*)\"$")
     public void thereIsAnPrivateMessageWithBody(String body) throws Throwable {
         thereIsAn("$.body", body);
     }
 
-    @And("^There is an private message sent to user \"([^\"]*)\"$")
+    @And("^There is a private message sent to user \"([^\"]*)\"$")
     public void thereIsAnPrivateMessageSentToUser(String user) throws Throwable {
         thereIsAn("$.destination", user);
+    }
+
+    @And("^There is a private message sent from user \"([^\"]*)\"$")
+    public void thereIsAnPrivateMessageSentFromUser(String sender) throws Throwable {
+        thereIsAn("$.sender", sender);
     }
 
     private <T> void thereIsAn(String jsonPath, T expected) throws Throwable {
