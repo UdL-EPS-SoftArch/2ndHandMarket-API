@@ -19,4 +19,6 @@ public interface AdvertisementRepository extends PagingAndSortingRepository<Adve
     List<Advertisement> findByTagsIn(@Param("tag") List<String> tags);
 
     List<Advertisement> findByTitleContaining(@Param("word") String word);
+
+    List<Advertisement> findByCategory(@Param("category") String category);
 }
