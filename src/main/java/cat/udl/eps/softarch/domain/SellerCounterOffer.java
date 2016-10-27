@@ -1,5 +1,9 @@
 package cat.udl.eps.softarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 /**
@@ -7,34 +11,15 @@ import javax.persistence.*;
  */
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
 public class SellerCounterOffer extends SellerOffer {
 
-    @ManyToOne
+    @JsonIdentityReference(alwaysAsId=true)
+    @OneToOne
     private BuyerCounterOffer respondsTo;
 
-    private float newValue;
+    public BuyerCounterOffer getRespondsTo(){ return respondsTo; }
 
-    @Override
-    public void setValue(float newValue){
-        if (newValue <= this.getValue()){
-            System.out.println("As a seller, you want to set an upper price");
-        }
-        else{
-            super.setValue(newValue);
-        }
-        offerAlert();
-    }
-
-    public void offerAlert() {
-        System.out.println("The product offer had been changed to a new value: " + getValue());
-    }
-
-    public BuyerCounterOffer getRespondsTo(){
-        return respondsTo;
-    }
-
-    public void setRespondsTo(BuyerCounterOffer respondsTo){
-        this.respondsTo = respondsTo;
-    }
+    public void setRespondsTo(BuyerCounterOffer respondsTo){ this.respondsTo = respondsTo; }
 
 }

@@ -1,10 +1,13 @@
 package cat.udl.eps.softarch.domain;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import org.hibernate.validator.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 /**
@@ -12,44 +15,36 @@ import java.time.ZonedDateTime;
  */
 
 @Entity
-public class Offer {
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
+public class Offer extends UriEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @NotBlank(message = "The offer cannot be null")
-    private float value = 0;
-
-    @JsonIdentityReference(alwaysAsId=true)
-    @ManyToOne
-    private Advertisement advert;
+    @NotNull(message = "The offer cannot be null")
+    private float value;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private ZonedDateTime published;
 
-    public Long getId(){
-        return id;
+    private String agent;
+
+    @JsonIdentityReference(alwaysAsId=true)
+    @ManyToOne
+    private Advertisement advertisement;
+
+    public Advertisement getAdvertisement(){ return advertisement; }
+
+    public void setAdvertisement(Advertisement advertisement){ this.advertisement = advertisement; }
+
+    public String getAgent(){ return agent; }
+
+    public void setAgent(String agent){
+        this.agent = agent;
     }
 
-    public float getValue() {
-        return value;
-    }
+    public float getValue() { return value; }
 
-    public void setValue(float value) {
-        this.value = value;
-    }
+    public void setValue(float value) { this.value = value; }
 
-   public Advertisement getAdvertisement(){
-        return advert;
-   }
+    public ZonedDateTime getPublished(){ return published; }
 
-   public void setAdverttisement(Advertisement advert){
-       this.advert = advert;
-   }
-
-   public ZonedDateTime getData(){
-        System.out.println(published);
-        return published;
-   }
+    public void setPublished(ZonedDateTime published){ this.published = published; }
 }
