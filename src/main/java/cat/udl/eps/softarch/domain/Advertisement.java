@@ -44,7 +44,7 @@ public class Advertisement extends UriEntity{
     @ElementCollection
     private Set<String> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "depicts")
+    @OneToMany(mappedBy = "depicts", cascade = CascadeType.ALL)
     private Set<Picture> pictures = new HashSet<>();
 
     /* technical product data */
