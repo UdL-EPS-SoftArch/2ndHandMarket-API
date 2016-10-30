@@ -20,7 +20,6 @@ public class Picture extends UriEntity{
     @NotBlank
     private String filename;
 
-    @Lob
     @Column(length = 5 * 1024 * 1024) // 5MB
     @Size(max = 5 * 1024 * 1024) // 5MB
     private String content;
