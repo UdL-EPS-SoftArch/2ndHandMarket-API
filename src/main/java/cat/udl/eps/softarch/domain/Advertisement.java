@@ -47,6 +47,9 @@ public class Advertisement extends UriEntity{
     @OneToMany(mappedBy = "depicts", cascade = CascadeType.ALL)
     private Set<Picture> pictures = new HashSet<>();
 
+    @OneToOne(mappedBy = "advertisement", cascade = CascadeType.REMOVE)
+    private Purchase purchase;
+
     /* technical product data */
     private String category;
     private String brand;
@@ -87,6 +90,12 @@ public class Advertisement extends UriEntity{
 
     public Set<String> getTags() {
         return tags;
+    }
+
+    public Set<Picture> getPictures() { return pictures; }
+
+    public Purchase getPurchase() {
+        return purchase;
     }
 
     public String getCategory() {
@@ -141,6 +150,12 @@ public class Advertisement extends UriEntity{
         this.tags = tags;
     }
 
+    public void setPictures(Set<Picture> pictures) { this.pictures = pictures; }
+
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
+    }
+
     public void setCategory(String category) {
         this.category = category;
     }
@@ -157,7 +172,4 @@ public class Advertisement extends UriEntity{
         this.weight = weight;
     }
 
-    public Set<Picture> getPictures() { return pictures; }
-
-    public void setPictures(Set<Picture> pictures) { this.pictures = pictures; }
 }
