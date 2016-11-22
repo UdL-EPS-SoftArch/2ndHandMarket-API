@@ -28,7 +28,7 @@ public class BuyerOffer extends UriEntity{
     private Advertisement advert;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private ZonedDateTime published;
-    @OneToMany
+    @ManyToOne
     private User agent;
     private float value = 0;
 
