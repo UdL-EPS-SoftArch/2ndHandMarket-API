@@ -10,7 +10,6 @@ import java.util.List;
  * Created by jennifer on 28/09/16.
  */
 @RepositoryRestResource
-public interface UserRepository extends PagingAndSortingRepository<User,Long>{
-    User findById(Long id);
+public interface UserRepository extends PagingAndSortingRepository<User,String>{
     List<User> findByName(String name);
 }
