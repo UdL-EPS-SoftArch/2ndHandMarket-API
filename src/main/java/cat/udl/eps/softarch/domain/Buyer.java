@@ -1,14 +1,8 @@
 package cat.udl.eps.softarch.domain;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -19,8 +13,6 @@ public class Buyer extends User{
 
     @ElementCollection
     private List<String> products;
-    private int count=0;
-
 
     public List<String> getProducts(){
         return products;
@@ -28,10 +20,9 @@ public class Buyer extends User{
 
     public void setProducts(List<String> products){
         this.products=products;
-        count+=1;
     }
 
     public int getCount(){
-        return count;
+        return products.size();
     }
 }
