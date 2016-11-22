@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
-public class Offer extends UriEntity{
+public class BuyerOffer extends UriEntity{
 
 
     /*@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,6 +28,7 @@ public class Offer extends UriEntity{
     private Advertisement advert;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private ZonedDateTime published;
+    @OneToMany
     private User agent;
     private float value = 0;
 
