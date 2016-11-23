@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Size;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +22,8 @@ public class Advertisement extends UriEntity{
     @NotBlank(message = "Title cannot be blank")
     private String title;
 
+    @Column(length = 2000)
+    @Size(max = 2000)
     private String description;
 
     private String owner;
@@ -41,7 +44,7 @@ public class Advertisement extends UriEntity{
     @ElementCollection
     private Set<String> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "depicts")
+    @OneToMany(mappedBy = "depicts", cascade = CascadeType.ALL)
     private Set<Picture> pictures = new HashSet<>();
 
     /* technical product data */
