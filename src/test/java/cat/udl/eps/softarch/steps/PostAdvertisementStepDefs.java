@@ -3,10 +3,8 @@ package cat.udl.eps.softarch.steps;
 import cat.udl.eps.softarch.Softarch1617Application;
 import cat.udl.eps.softarch.domain.Advertisement;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.hamcrest.Matchers;
@@ -101,7 +99,7 @@ public class PostAdvertisementStepDefs {
     public void iPutTheAdvertisement(Long id) throws Throwable {
         String message = mapper.writeValueAsString(ad);
 
-        result = mockMvc.perform(patch("/advertisements/" + id)
+        result = mockMvc.perform(put("/advertisements/" + id)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
                 .accept(MediaType.APPLICATION_JSON)
