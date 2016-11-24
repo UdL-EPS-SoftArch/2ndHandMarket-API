@@ -22,9 +22,9 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
     public void init(AuthenticationManagerBuilder auth) throws Exception {
 
         auth.userDetailsService(userDetailsService)
-            .passwordEncoder(new BCryptPasswordEncoder())
-            .and()
-            .inMemoryAuthentication()
+            .passwordEncoder(new BCryptPasswordEncoder());
+        auth.inMemoryAuthentication()
+                .passwordEncoder(new BCryptPasswordEncoder())
                 .withUser("admin")
                     .password("$2a$10$B1dcscvS/lgiBnGdkhhupew8AhbjqUL7TjdA2ggvxQhs5jN7KVSMC")
                     .roles("ADMIN");

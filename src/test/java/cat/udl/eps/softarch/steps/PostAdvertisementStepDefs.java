@@ -5,7 +5,6 @@ import cat.udl.eps.softarch.domain.Advertisement;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.hamcrest.Matchers;
@@ -31,10 +30,10 @@ import java.util.Set;
 
 import static cat.udl.eps.softarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -79,6 +78,29 @@ public class PostAdvertisementStepDefs {
         result = mockMvc.perform(post("/advertisements")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authenticate()))
+                .andDo(print());
+    }
+
+    @And("^I put the advertisement with id \"([^\"]*)\"$")
+    public void iPutTheAdvertisement(Long id) throws Throwable {
+        String message = mapper.writeValueAsString(ad);
+
+        result = mockMvc.perform(put("/advertisements/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(message)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authenticate()))
+                .andDo(print());
+    }
+
+    @And("^I delete the advertisement with id \"([^\"]*)\"$")
+    public void iDeleteTheAdvertisementWithId(Long id) throws Throwable {
+        String message = mapper.writeValueAsString(ad);
+
+        result = mockMvc.perform(delete("/advertisements/" + id)
+                .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(authenticate()))
                 .andDo(print());
@@ -242,5 +264,14 @@ public class PostAdvertisementStepDefs {
             result.andExpect(status().reason(Matchers.is(message)));
         else
             result.andExpect(jsonPath("$..message", hasItem(message)));
+    }
+
+    @Then("^There are no advertisements$")
+    public void thereAreNoAdvertisements() throws Throwable {
+        mockMvc.perform(get("/advertisements")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.advertisements", is(empty())))
+                .andDo(print());
     }
 }
