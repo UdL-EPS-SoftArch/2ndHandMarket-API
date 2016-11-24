@@ -75,7 +75,7 @@ Feature: Post Advertisement
     And I fill in price with "42"
     And I post the advertisement
     And I fill in title with "unicorns"
-    And I patch the advertisement with id "1"
+    And I put the advertisement with id "1"
     Then The status is 200
     Then There is an advertisement with title "unicorns"
 
@@ -87,32 +87,8 @@ Feature: Post Advertisement
     And I fill in price with "42"
     And I post the advertisement
     Then The status is 201
-    And I login as "user" with password "password"
     And I fill in title with "unicorn"
-    And I patch the advertisement with id "1"
-    Then The status is 403
-
-  @quick
-  Scenario: Update advertisement (with put)
-    Given I login as "user" with password "password"
-    And I create a new advertisement
-    And I fill in title with "ponies"
-    And I fill in price with "42"
-    And I post the advertisement
-    And I fill in title with "unicorns"
-    And I put the advertisement with id "1"
-    Then The status is 200
-    Then There is an advertisement with title "unicorns"
-
-  @quick
-  Scenario: Owner required error when updating an advertisement (with put) if not the owner
-    Given I login as "user" with password "password"
-    And I create a new advertisement
-    And I fill in title with "ponies"
-    And I fill in price with "42"
-    And I post the advertisement
-    Then The status is 201
-    And I fill in title with "unicorn"
+    And I login as "user2" with password "password"
     And I put the advertisement with id "1"
     Then The status is 403
 
@@ -136,5 +112,6 @@ Feature: Post Advertisement
     And I fill in price with "42"
     And I post the advertisement
     Then The status is 201
+    And I login as "user2" with password "password"
     And I delete the advertisement with id "1"
     Then The status is 403

@@ -83,18 +83,6 @@ public class PostAdvertisementStepDefs {
                 .andDo(print());
     }
 
-    @And("^I patch the advertisement with id \"([^\"]*)\"$")
-    public void iPatchTheAdvertisement(Long id) throws Throwable {
-        String message = mapper.writeValueAsString(ad);
-
-        result = mockMvc.perform(patch("/advertisements/" + id)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(message)
-                .accept(MediaType.APPLICATION_JSON)
-                .with(authenticate()))
-                .andDo(print());
-    }
-
     @And("^I put the advertisement with id \"([^\"]*)\"$")
     public void iPutTheAdvertisement(Long id) throws Throwable {
         String message = mapper.writeValueAsString(ad);
