@@ -1,7 +1,7 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -18,6 +18,7 @@ import java.util.Set;
  */
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
+@JsonIgnoreProperties(value = {"owner", "createdAt"}, allowGetters = true)
 public class Advertisement extends UriEntity{
 
     @NotBlank(message = "Title cannot be blank")
@@ -123,12 +124,10 @@ public class Advertisement extends UriEntity{
         this.description = description;
     }
 
-    @JsonIgnore
     public void setOwner(String owner) {
         this.owner = owner;
     }
 
-    @JsonIgnore
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
