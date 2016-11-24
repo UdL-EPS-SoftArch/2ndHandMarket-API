@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.time.ZonedDateTime;
 
 /**
- * Created by julio on 23/11/16.
+ * Created by xavier on 22/09/16.
  */
 
 @Entity
@@ -45,8 +45,8 @@ public class BuyerOffer extends UriEntity{
     }
 
     public void setAdverttisement(Advertisement advert){
-        this.advert = advert;
-    }
+       this.advert = advert;
+   }
 
     public User getBuyer(){
         return agent;

@@ -1,10 +1,9 @@
 package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.Softarch1617Application;
-import cat.udl.eps.softarch.domain.BuyerCounterOffer;
+import cat.udl.eps.softarch.domain.BuyerCounterBuyerOffer;
 import cat.udl.eps.softarch.domain.SellerOffer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -23,12 +22,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.Objects;
 
-import javax.validation.constraints.AssertFalse;
-import javax.validation.constraints.AssertTrue;
+import java.util.Objects;
 
 /**
  * Created by xavier on 27/09/16.
@@ -57,10 +52,12 @@ public class BuyerCounterOfferStepDefs {
                 .build();
     }
 
-    private BuyerCounterOffer buyerOffer= new BuyerCounterOffer();
-    private BuyerCounterOffer buyerOffer2= new BuyerCounterOffer();
+
+    private BuyerCounterBuyerOffer buyerOffer= new BuyerCounterBuyerOffer();
+    private BuyerCounterBuyerOffer buyerOffer2= new BuyerCounterBuyerOffer();
     private String agent = new String("agent");
     private SellerOffer sellerOffer= new SellerOffer();
+
 
     @When("^I post a new buyer counter offer with a lower price value (\\d+\\.\\d+)$")
     public void iPostANewBuyerCounterOfferWithALowerPriceValue(float newValue) throws Throwable {
