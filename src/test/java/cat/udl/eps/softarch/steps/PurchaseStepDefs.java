@@ -134,14 +134,9 @@ public class PurchaseStepDefs {
 
     @And("^I put purchase \"([^\"]*)\" with advertisement \"([^\"]*)\"$")
     public void iPutPurchaseWithAdvertisement(String purchaseId, String advertisementId) throws Throwable {
-        Advertisement advertisement = advertisementRepository.findOne(Long.parseLong(advertisementId));
+        String message = "{ \"advertisement\": \"/advertisements/" + advertisementId + "\" }";
 
-        Purchase purchase = new Purchase();
-        purchase.setAdvertisement(advertisement);
-
-        String message = mapper.writeValueAsString(purchase);
-
-        result = mockMvc.perform(put("/purchase/" + purchaseId)
+        result = mockMvc.perform(put("/purchases/" + purchaseId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
                 .accept(MediaType.APPLICATION_JSON)
@@ -151,14 +146,9 @@ public class PurchaseStepDefs {
 
     @And("^I patch purchase \"([^\"]*)\" with advertisement \"([^\"]*)\"$")
     public void iPatchPurchaseWithAdvertisement(String purchaseId, String advertisementId) throws Throwable {
-        Advertisement advertisement = advertisementRepository.findOne(Long.parseLong(advertisementId));
+        String message = "{ \"advertisement\": \"/advertisements/" + advertisementId + "\" }";
 
-        Purchase purchase = new Purchase();
-        purchase.setAdvertisement(advertisement);
-
-        String message = mapper.writeValueAsString(purchase);
-
-        result = mockMvc.perform(put("/purchase/" + purchaseId)
+        result = mockMvc.perform(put("/purchases/" + purchaseId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
                 .accept(MediaType.APPLICATION_JSON)
@@ -168,7 +158,7 @@ public class PurchaseStepDefs {
 
     @And("^I delete purchase \"([^\"]*)\"$")
     public void iDeletePurchase(String purchaseId) throws Throwable {
-        result = mockMvc.perform(delete("/purchase/" + purchaseId)
+        result = mockMvc.perform(delete("/purchases/" + purchaseId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .with(authenticate()))

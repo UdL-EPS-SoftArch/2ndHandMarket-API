@@ -45,7 +45,7 @@ Feature: Purchase
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"
     And I post a purchase to advertisement "1"
-    Then The purchase status is 403
+    Then The purchase status is 500
     And There are 0 purchases
 
   @quick
@@ -66,7 +66,7 @@ Feature: Purchase
     And I post an advertisement with title "Reindeer" and price "6102"
     And I login as "user2" with password "password"
     And I post a purchase to advertisement "2"
-    Then The status is 201
+    Then The purchase status is 201
     And There is a purchase with advertisement title "Reindeer"
 
   @quick
@@ -75,12 +75,12 @@ Feature: Purchase
     And I post an advertisement with title "Santa" and price "2016"
     And I login as "user2" with password "password"
     And I post a purchase to advertisement "1"
-    And I put purchase "1" with advertisement "2"
-    Then The status is 500
+    And I put purchase "1" with advertisement "1"
+    Then The purchase status is 500
     And There are 1 purchases
     And There is a purchase with advertisement title "Santa"
-    And I patch purchase "1" with advertisement "2"
-    Then The status is 500
+    And I patch purchase "1" with advertisement "1"
+    Then The purchase status is 500
     And There are 1 purchases
     And There is a purchase with advertisement title "Santa"
 
@@ -91,6 +91,6 @@ Feature: Purchase
     And I login as "user2" with password "password"
     And I post a purchase to advertisement "1"
     And I delete purchase "1"
-    Then The status is 500
+    Then The purchase status is 500
     And There are 1 purchases
     And There is a purchase with advertisement title "Santa"

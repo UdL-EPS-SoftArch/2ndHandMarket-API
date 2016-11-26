@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.handler;
 
+import cat.udl.eps.softarch.domain.Advertisement;
 import cat.udl.eps.softarch.domain.Purchase;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.AssertTrue;
 import java.time.ZonedDateTime;
 
 @Component
@@ -29,15 +29,24 @@ public class PurchaseEventHandler {
     @Transactional
     @PreAuthorize("hasRole('USER')")
     public void handlePurchasePreCreate(Purchase purchase) {
+        String loggedInAs = SecurityContextHolder.getContext().getAuthentication().getName();
+
         ZonedDateTime now = ZonedDateTime.now();
         purchase.setCreatedAt(now);
 
         // The current purchaser; buying through accepting an offer will have a different handler.
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        purchase.setPurchaser(username);
+        purchase.setPurchaser(loggedInAs);
+
+        // A product cannot be purchased by their owner
+        Assert.isTrue(!loggedInAs.equals(purchase.getAdvertisement().getOwner()),
+                      "You cannot buy your own product.");
 
         // A product can only be purchased once.
-//        Assert.isNull(advertisementRepository.findOne(purchase.getAdvertisement().getId()));
+        // We are required to look into the repository since purchase.getAdvertisement() will have
+        // already been edited when entering the handler.
+        Advertisement purchasing = purchase.getAdvertisement();
+        Assert.isNull(advertisementRepository.findOne(purchasing.getId()).getPurchase(),
+                      "This product has already been purchased.");
     }
 
     /**
@@ -45,11 +54,11 @@ public class PurchaseEventHandler {
      */
     @HandleBeforeSave
     public void handlePurchasePreSave(Purchase purchase) {
-        throw new AssertionError("Purchases cannot be edited");
+        Assert.isTrue(false, "Purchases cannot be edited.");
     }
 
     @HandleBeforeDelete
     public void handlePurchasePreDelete(Purchase purchase) {
-        throw new AssertionError("Purchases cannot be deleted");
+        Assert.isTrue(false, "Purchases cannot be deleted.");
     }
 }
