@@ -15,6 +15,7 @@ public class AuthenticationTestConfig extends GlobalAuthenticationConfigurerAdap
         auth
             .inMemoryAuthentication()
                 .withUser("user").password("password").roles("USER").and()
-                .withUser("user2").password("password").roles("USER");
+                .withUser("user2").password("password").roles("USER").and()
+                .withUser("user3").password("password").roles("USER");
     }
 }
