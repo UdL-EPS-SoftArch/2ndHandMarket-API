@@ -13,22 +13,12 @@ import javax.persistence.Entity;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
 public class BasketProduct extends UriEntity {
 
-    private String title;
-    private Double price;
+    private Advertisement product;
 
-
-
-    public void setTitle(String title) {
-        this.title = title;
+    public Advertisement getProduct() {
+        return product;
     }
-    public void setPrice(Double price){this.price = price;}
 
-    public String getTitle() {
-        return title;
-    }
-    public Double getPrice() {
-        return price;
-    }
 
 
 }
