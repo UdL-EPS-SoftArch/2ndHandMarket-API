@@ -10,4 +10,11 @@ notifications:
     on_success: change
     on_failure: always
   webhooks:
-    - https://udl-eps-softarch-softarch-1617-server.getbadges.io/api/app/webhook/13122f84-94d3-405a-8c59-d95bca2ed34a
+  - https://udl-eps-softarch-softarch-1617-server.getbadges.io/api/app/webhook/13122f84-94d3-405a-8c59-d95bca2ed34a
+deploy:
+  provider: heroku
+  strategy: git
+  app:
+    master: softarch-1617-api
+  api_key:
+    secure: dFXg5Gt2k2NOc51EeCgb4L8bwu1sEnuJ5paSY3l4BkgI8vMJscdLNLldGQWIDw4BSKvvP2+LTHTFmDO730oeBqc95q5XAVi/maLudoWJhVbz26+Rm0rC6tK6UZSctV2MiFYO35HsP30T7sF0jAkExYj3ur/e7rPk0oxUla3OiroksWuMNDTeSSNFL9Ies6zkTeVJtFPGsCh1B9nilVqgfqt6SXCU4q/hJid0lqkRbn0HjG6ToOzu+NAY371NLEbJCx1qi8Arj9rFbo4lbEj7u/gWF1+87KhV8JRFt6ln/jS4bAZEiH0lSyBPlFmhGjfI6CPJK47igvHMLlg8b2uTSg7u2CemtpfzckTDrsM0kXprA8eva9ycNTE2mELD98ONQsVO7vWf6uvwYI5XUX4HRTCO0px2KTxXlJudS8JnaqZToGSRCNl5fL8noHNI2AQXS7WCRXr8DZdQ4MkwWpBALrV667c5tIRVKHRzgxstIW+nY98gxNE+zJQot5yCYnZsrBu0Lj89QOLW2EuQ1QszzFuPeK4fD0bmybJqOCJokzZ8lRM0JR2xBRpf+6rmGHGdceKMIpyXceAXXmnFqzILJgPbhL4blcWj6lfCUJxsX/eQP4M0+I3BvRxyhj0rxT2ha9+Kt0hj0r/tSt1Y9QD8ZKMg6zVtOkY6OviVfpNhvnc=

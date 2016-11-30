@@ -23,11 +23,12 @@ The project **ProjectName** is a second hand marketplace **that** allows users t
 | Seller                  | Buyer                  |
 | ------------------------| -----------------------|
 | Post ad <sup>1</sup>    | Search ads             |
-| Seller counter-offer    | Buy                    |
-| Sell                    | Buyer counter-offer    |
+| Sell                    | Buy                    |
+| Update price            | Buyer offer            |
 | Private message         | Private message        |
-| Promote ad              | Add ad to wishlist     |
-|                         | Rate purchase          |
+| Reject buyer offer      | Add ad to wishlist     |
+| Update price            | Cancel buyer offer     |
+|                         | Complete purchase      |
 
 <sup>1</sup> Including price, time limit, min. price, product type, location...
 
@@ -40,6 +41,7 @@ class Advertisement {;
     List<Picture> pictures;
     String location;
     Time time;
+    Decimal price;
 };
 Advertisement "many" -up- "1" Seller;
 Advertisement "1" -down- "many" Picture;
@@ -58,23 +60,13 @@ class Purchase {;
 };
 Purchase "many" -up- "1" Buyer;
 Purchase "0..1" -right- "1" Advertisement;
-class Offer {;
-    Advertisement about;
-    Time time;
-};
-class SellerOffer extends Offer {;
-    Seller agent;
-};
-SellerOffer "1" -left- "1" Advertisement;
-class BuyerCounterOffer extends Offer {;
+class BuyerOffer {;
     Buyer agent;
-    SellerOffer respondsTo;
+    Time time;
+    Decimal price;
+    Boolean isActive;
 };
-BuyerCounterOffer "1" --> "1" SellerOffer;
-class SellerCounterOffer extends SellerOffer {;
-    BuyerCounterOffer respondsTo;
-};
-SellerCounterOffer "1" --> "1" BuyerCounterOffer;
+BuyerOffer "many" -left- "1" Advertisement;
 class PrivateMessage {;
     User sender;
     User receiver;

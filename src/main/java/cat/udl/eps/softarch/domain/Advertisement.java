@@ -1,11 +1,15 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Size;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,18 +18,23 @@ import java.util.Set;
  */
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
+@JsonIgnoreProperties(value = {"owner", "createdAt"}, allowGetters = true)
 public class Advertisement extends UriEntity{
 
     @NotBlank(message = "Title cannot be blank")
     private String title;
 
+    @Column(length = 2000)
+    @Size(max = 2000)
     private String description;
 
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-//    private ZonedDateTime createdAt;
+    private String owner;
 
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-//    private ZonedDateTime modifiedAt;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime createdAt;
+
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private ZonedDateTime modifiedAt;
 
     @DecimalMin(message = "Price has to be bigger than 0.01", value = "0.01")
     private Double price;
@@ -37,8 +46,11 @@ public class Advertisement extends UriEntity{
     @ElementCollection
     private Set<String> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "depicts")
+    @OneToMany(mappedBy = "depicts", cascade = CascadeType.ALL)
     private Set<Picture> pictures = new HashSet<>();
+
+    @OneToOne(mappedBy = "advertisement", cascade = CascadeType.REMOVE)
+    private Purchase purchase;
 
     /* technical product data */
     private String category;
@@ -54,13 +66,17 @@ public class Advertisement extends UriEntity{
         return description;
     }
 
-//    public ZonedDateTime getCreatedAt() {
-//        return createdAt;
-//    }
+    public String getOwner() {
+        return owner;
+    }
 
-//    public ZonedDateTime getModifiedAt() {
-//        return modifiedAt;
-//    }
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public ZonedDateTime getModifiedAt() {
+        return modifiedAt;
+    }
 
     public Double getPrice() {
         return price;
@@ -76,6 +92,12 @@ public class Advertisement extends UriEntity{
 
     public Set<String> getTags() {
         return tags;
+    }
+
+    public Set<Picture> getPictures() { return pictures; }
+
+    public Purchase getPurchase() {
+        return purchase;
     }
 
     public String getCategory() {
@@ -102,6 +124,18 @@ public class Advertisement extends UriEntity{
         this.description = description;
     }
 
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setModifiedAt(ZonedDateTime modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
+
     public void setPrice(Double price) {
         this.price = price;
     }
@@ -116,6 +150,12 @@ public class Advertisement extends UriEntity{
 
     public void setTags(Set<String> tags) {
         this.tags = tags;
+    }
+
+    public void setPictures(Set<Picture> pictures) { this.pictures = pictures; }
+
+    public void setPurchase(Purchase purchase) {
+        this.purchase = purchase;
     }
 
     public void setCategory(String category) {
@@ -134,7 +174,4 @@ public class Advertisement extends UriEntity{
         this.weight = weight;
     }
 
-    public Set<Picture> getPictures() { return pictures; }
-
-    public void setPictures(Set<Picture> pictures) { this.pictures = pictures; }
 }

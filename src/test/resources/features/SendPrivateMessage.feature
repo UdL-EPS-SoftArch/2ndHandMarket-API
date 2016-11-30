@@ -4,7 +4,8 @@ Feature: Send a private message
   I want to be able to define a title and a body for the private message
 
   Scenario: Send private message
-    When I send a private message with title "The product is not working" and body "testBody" to user "testUser"
-    And There is an private message with title "The product is not working"
-    And There is an private message with body "testBody"
-    And There is an private message sent to user "testUser"
+    When A private message with title "The product is not working" and body "testBody" is sent from "SenderUser" to user "testUser"
+    And There is a private message with title "The product is not working"
+    And There is a private message with body "testBody"
+    And There is a private message sent to user "testUser"
+    And There is a private message sent from user "SenderUser"
