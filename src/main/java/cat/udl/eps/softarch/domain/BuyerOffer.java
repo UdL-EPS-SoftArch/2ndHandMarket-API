@@ -12,52 +12,49 @@ import java.time.ZonedDateTime;
 /**
  * Created by julio on 23/11/16.
  */
-
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
 public class BuyerOffer extends UriEntity{
 
+    private String buyer_id;
 
-    /*@GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;*/
+    private String advertisement_id;
 
-    //@NotBlank(message = "The offer cannot be null")
+    private Double value;
 
-    @JsonIdentityReference(alwaysAsId=true)
-    @ManyToOne
-    private Advertisement advert;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private ZonedDateTime published;
-    @ManyToOne
-    private User agent;
-    private float value = 0;
+    private ZonedDateTime date;
 
-    public float getValue() {
+    public String getBuyer_id() {
+        return buyer_id;
+    }
+
+    public String getAdvertisement_id() {
+        return advertisement_id;
+    }
+
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(float value) {
+    public ZonedDateTime getDate() {
+        return date;
+    }
+
+    public void setBuyer_id(String buyer_id) {
+        this.buyer_id = buyer_id;
+    }
+
+    public void setAdvertisement_id(String advertisement_id) {
+        this.advertisement_id = advertisement_id;
+    }
+
+    public void setValue(Double value) {
         this.value = value;
     }
 
-    public Advertisement getAdvertisement(){
-        return advert;
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
     }
 
-    public void setAdverttisement(Advertisement advert){
-        this.advert = advert;
-    }
-
-    public User getBuyer(){
-        return agent;
-    }
-
-    public void setBuyer(User agent){
-        this.agent = agent;
-    }
-
-    public ZonedDateTime getDate(){
-        System.out.println(published);
-        return published;
-    }
 }
