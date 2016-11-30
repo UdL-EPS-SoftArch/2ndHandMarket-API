@@ -15,6 +15,7 @@ public class BasketProduct extends UriEntity {
 
     private Advertisement product;
 
+    public void setProduct(){this.product = product;}
     public Advertisement getProduct() {
         return product;
     }
