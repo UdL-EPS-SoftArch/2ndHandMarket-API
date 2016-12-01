@@ -263,7 +263,7 @@ public class PostAdvertisementStepDefs {
         if (result.andReturn().getResponse().getContentAsString().isEmpty())
             result.andExpect(status().reason(Matchers.is(message)));
         else
-            result.andExpect(jsonPath("$..message", hasItem(message)));
+            result.andExpect(jsonPath("$.message", hasItem(message)));
     }
 
     @Then("^There are no advertisements$")
