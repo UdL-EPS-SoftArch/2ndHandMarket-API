@@ -70,6 +70,29 @@ Feature: Purchase
     And There is a purchase with advertisement title "Reindeer"
 
   @quick
+  Scenario: Update advertisement if it has already been purchased
+    Given I login as "user" with password "password"
+    And I create a new advertisement
+    And I fill in title with "ponies"
+    And I fill in price with "42"
+    And I post the advertisement
+    Then I login as "user2" with password "password"
+    Then I post a purchase to advertisement "1"
+    Then I login as "user" with password "password"
+    Then I put the advertisement with id "1"
+    Then The status is 500
+
+  @quick
+  Scenario: Delete advertisement if it has already been purchased
+    Given I login as "user" with password "password"
+    When I post an advertisement with title "Ponies" and price "42"
+    Then I login as "user2" with password "password"
+    Then I post a purchase to advertisement "1"
+    Then I login as "user" with password "password"
+    Then I delete the advertisement with id "1"
+    Then The status is 500
+
+  @quick
   Scenario: Update purchase
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"

@@ -2,6 +2,7 @@ package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.Softarch1617Application;
 import cat.udl.eps.softarch.domain.Advertisement;
+import cat.udl.eps.softarch.domain.Purchase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -85,6 +86,7 @@ public class PostAdvertisementStepDefs {
 
     @And("^I put the advertisement with id \"([^\"]*)\"$")
     public void iPutTheAdvertisement(Long id) throws Throwable {
+        ad.setPurchase(new Purchase());
         String message = mapper.writeValueAsString(ad);
 
         result = mockMvc.perform(put("/advertisements/" + id)
