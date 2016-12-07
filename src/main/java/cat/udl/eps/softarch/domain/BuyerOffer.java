@@ -18,7 +18,13 @@ public class BuyerOffer extends UriEntity{
 
     private String buyer_id;
 
-    private String advertisement_id;
+    private int advertisement_id;
+
+    private String advertisement_title;
+
+    private String advertisement_seller;
+
+    private int advertisement_iniPrice;
 
     private Double value;
 
@@ -29,8 +35,20 @@ public class BuyerOffer extends UriEntity{
         return buyer_id;
     }
 
-    public String getAdvertisement_id() {
+    public int getAdvertisement_id() {
         return advertisement_id;
+    }
+
+    public String getAdvertisement_title() {
+        return advertisement_title;
+    }
+
+    public String getAdvertisement_seller() {
+        return advertisement_seller;
+    }
+
+    public int getAdvertisement_iniPrice() {
+        return advertisement_iniPrice;
     }
 
     public Double getValue() {
@@ -45,8 +63,20 @@ public class BuyerOffer extends UriEntity{
         this.buyer_id = buyer_id;
     }
 
-    public void setAdvertisement_id(String advertisement_id) {
+    public void setAdvertisement_id(int advertisement_id) {
         this.advertisement_id = advertisement_id;
+    }
+
+    public void setAdvertisement_title(String advertisement_title) {
+        this.advertisement_title = advertisement_title;
+    }
+
+    public void setAdvertisement_seller(String advertisement_seller) {
+        this.advertisement_seller = advertisement_seller;
+    }
+
+    public void setAdvertisement_iniPrice(int advertisement_iniPrice) {
+        this.advertisement_iniPrice = advertisement_iniPrice;
     }
 
     public void setValue(Double value) {
