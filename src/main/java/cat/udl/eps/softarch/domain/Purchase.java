@@ -1,13 +1,13 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
@@ -18,6 +18,7 @@ public class Purchase extends UriEntity {
 
     private String purchaser;
 
+    @JsonIdentityReference(alwaysAsId=true)
     @OneToOne
     @NotNull
     Advertisement advertisement;
