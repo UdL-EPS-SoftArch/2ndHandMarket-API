@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
@@ -77,13 +78,10 @@ public class User implements UserDetails {
 
     @Override
     @JsonIgnore
-    public String getPassword(){
-        return password;
-    }
+    public String getPassword(){ return password; }
 
-    public void setPassword(String password){
-        this.password=password;
-    }
+    @JsonSetter
+    public void setPassword(String password){ this.password=password; }
 
     @Override
     public boolean isAccountNonExpired() { return true; }
