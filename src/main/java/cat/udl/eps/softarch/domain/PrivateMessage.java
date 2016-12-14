@@ -5,6 +5,7 @@ package cat.udl.eps.softarch.domain;
  */
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Entity;
@@ -25,6 +26,9 @@ public class PrivateMessage extends UriEntity{
     @NotBlank(message = "Sender cannot be blank")
     private String sender;
 
+    @NotBlank(message = "IsRead cannot be blank")
+    private boolean isRead;
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -36,6 +40,9 @@ public class PrivateMessage extends UriEntity{
     }
     public void setSender(String sender) {
         this.sender = sender;
+    }
+    public void setRead(boolean isRead) {
+        this.isRead = isRead;
     }
 
     public String getTitle() {
@@ -50,6 +57,8 @@ public class PrivateMessage extends UriEntity{
     public String getSender() {
         return sender;
     }
-
+    public boolean getIsRead() {
+        return isRead;
+    }
 }
 
