@@ -26,7 +26,6 @@ public class PrivateMessage extends UriEntity{
     @NotBlank(message = "Sender cannot be blank")
     private String sender;
 
-    @NotBlank(message = "IsRead cannot be blank")
     private boolean isRead;
 
     public void setTitle(String title) {
