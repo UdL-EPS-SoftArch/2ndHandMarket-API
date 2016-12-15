@@ -4,6 +4,6 @@ Feature: Add Advertisement to a WishList
   I want to add advertisements in a list
 
   Scenario: Add advertisement to the wish
-    When I add advertisement to the list "Laptop" 
-   
-
+    Given There is an existing advertisement with title "Laptop" and price 10.0
+    When I create an user with username "Tom" and password "pass"
+    And I post a wishlist to advertisement "Tom"

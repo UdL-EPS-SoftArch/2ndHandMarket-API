@@ -72,7 +72,7 @@ public class AddWishListStepDefs {
 
 
     @Given("^There is an existing advertisement with title \"([^\"]*)\" and category \"([^\"]*)\" $")
-    public void thereIsAnAdvertisementWithTitleAndPrice(String title, String category) throws Throwable {
+    public void thereIsAnAdvertisementWithTitleAndCategory(String title, String category) throws Throwable {
         advertisement = new Advertisement();
         advertisement.setTitle(title);
         advertisement.setCategory(category);
@@ -80,8 +80,8 @@ public class AddWishListStepDefs {
         idAdv = advertisement.getId();
     }
 
-    @And("^I post a purchase to advertisement \"([^\"]*)\"$")
-    public void iPostAPurchaseToAdvertisement(String username) throws Throwable {
+    @And("^I post a wishlist to advertisement \"([^\"]*)\"$")
+    public void iPostAWishlistToAdvertisement(String username) throws Throwable {
 
         String message = "/advertisements/" + idAdv;
 
