@@ -9,7 +9,7 @@ Feature: User Management
     And I can login with username "johnsmith" and password "password"
 
   Scenario: Update user password
-    Given There is an existing user with username "johnsmith" and password "password"
+    Given I create an user with username "johnsmith" and password "password"
     And I can login with username "johnsmith" and password "password"
     When I update username "johnsmith" password to "PassWord"
     Then I can login with username "johnsmith" and password "PassWord"

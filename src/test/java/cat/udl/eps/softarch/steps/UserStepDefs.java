@@ -63,14 +63,14 @@ public class UserStepDefs {
                 .build();
     }
 
-    @Given("^There is an existing user with username \"([^\"]*)\" and password \"([^\"]*)\"$")
-    public void iCreateAnUserWithNameAndLastname(String username, String password) throws Throwable {
-        User user = new User();
-        user.setUsername(username);
-        user.setName(username);
-        user.setPassword(passwordEncoder.encode(password));
-        userRepository.save(user);
-    }
+//    @Given("^There is an existing user with username \"([^\"]*)\" and password \"([^\"]*)\"$")
+//    public void iCreateAnUserWithNameAndLastname(String username, String password) throws Throwable {
+//        User user = new User();
+//        user.setUsername(username);
+//        user.setName(username);
+//        user.setPassword(passwordEncoder.encode(password));
+//        userRepository.save(user);
+//    }
 
     @And("^I can login with username \"([^\"]*)\" and password \"([^\"]*)\"$")
     public void iCanLoginWithUsernameAndPassword(String username, String password) throws Throwable {
@@ -95,7 +95,7 @@ public class UserStepDefs {
     @When("^I update username \"([^\"]*)\" password to \"([^\"]*)\"$")
     public void iUpdateUsernamePasswordTo(String username, String password) throws Throwable {
         String message = String.format("{\"username\":\"%s\",\"name\":\"%s\",\"password\":\"%s\"}",
-                username, username, passwordEncoder.encode(password));
+                username, username, password);
 
         result = mockMvc.perform(
                 put("/users/{username}", username)
@@ -109,7 +109,7 @@ public class UserStepDefs {
     @When("^I create an user with username \"([^\"]*)\" and password \"([^\"]*)\"$")
     public void iCreateAnUserWithUsernameAndPassword(String username, String password) throws Throwable {
         String message = String.format("{\"username\":\"%s\",\"name\":\"%s\",\"password\":\"%s\"}",
-                username, username, passwordEncoder.encode(password));
+                username, username, password);
 
         result = mockMvc.perform(
                 post("/users")
