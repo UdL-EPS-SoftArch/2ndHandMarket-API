@@ -102,7 +102,7 @@ public class Advertisement extends UriEntity{
     }
 
     public Set<String> getTags() {
-        return tags;
+        return new HashSet<>(tags);
     }
 
     public Set<Picture> getPictures() { return pictures; }
@@ -160,7 +160,7 @@ public class Advertisement extends UriEntity{
     }
 
     public void setTags(Set<String> tags) {
-        this.tags = tags;
+        this.tags = new HashSet<>(tags);
     }
 
     public void setPictures(Set<Picture> pictures) { this.pictures = pictures; }
