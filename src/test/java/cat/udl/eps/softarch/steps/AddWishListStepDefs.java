@@ -3,9 +3,8 @@ package cat.udl.eps.softarch.steps;
 import cat.udl.eps.softarch.Softarch1617Application;
 import cat.udl.eps.softarch.domain.Advertisement;
 import cat.udl.eps.softarch.domain.User;
-import cat.udl.eps.softarch.domain.WishList;
+
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
-import cat.udl.eps.softarch.repository.WishlistRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -59,9 +58,9 @@ public class AddWishListStepDefs {
     private User user;
 
     @Autowired private AdvertisementRepository advertisementRepository;
-    @Autowired private WishlistRepository wishlistRepository;
+
     public Advertisement advertisement;
-    public WishList wishList;
+    long idAdv;
 
     @Before
     public void setup() {
@@ -71,49 +70,28 @@ public class AddWishListStepDefs {
                 .build();
     }
 
-    @When("^I add advertisement to the list \"([^\"]*)\" $")
-    public void iAddAdvertisementToTheList(String advname) throws Throwable {
-        wishList  = new WishList();
+
+    @Given("^There is an existing advertisement with title \"([^\"]*)\" and category \"([^\"]*)\" $")
+    public void thereIsAnAdvertisementWithTitleAndPrice(String title, String category) throws Throwable {
         advertisement = new Advertisement();
-        advertisement.setTitle(advname);
-        wishList.setTowish(advertisement);
-
-        String message = mapper.writeValueAsString(wishList);
-
-        result = mockMvc.perform(
-                post("/wishlist")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(message)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(authenticate()))
-                .andDo(print());
+        advertisement.setTitle(title);
+        advertisement.setCategory(category);
+        advertisement = advertisementRepository.save(advertisement);
+        idAdv = advertisement.getId();
     }
 
-/*
-    @When("^I add advertisement to the list \"([^\"]*)\" $")
-    public void iAddAdvertisementToTheList(String advertisementId)throws Exception {
-        wishList = new WishList();
-        advertisement = new Advertisement();
-        wishList.AddAdvertisement(advertisement);
+    @And("^I post a purchase to advertisement \"([^\"]*)\"$")
+    public void iPostAPurchaseToAdvertisement(String username) throws Throwable {
 
-        String message = "{ \"advertisement\": \"/advertisements/" + advertisementId + "\" }";
+        String message = "/advertisements/" + idAdv;
 
-        result = mockMvc.perform(
-                post("/wishlist")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(message)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .with(authenticate()))
+        result = mockMvc.perform(post("users/" + username +"/wishes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(message)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authenticate()))
                 .andDo(print());
     }
-
-     @Then("^There are (\\d+) advertisements to the wishlist $")
-    public void thereAreAdvertisementsToTheWishList(int num) throws Exception {
-         result
-                 .andExpect(jsonPath("$._embedded.wishlist", hasSize(num)));
-     }
-*/
-
 
 
 

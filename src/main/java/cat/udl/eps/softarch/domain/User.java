@@ -28,6 +28,21 @@ public class User implements UserDetails {
     private String country;
     @NotEmpty(message = "Is necessary a password")
     private String password;
+    @ManyToMany
+    private Set<Advertisement> wishes;
+
+    public Set<Advertisement> getWishes() {
+        return wishes;
+    }
+
+    public void setWishes(Set<Advertisement> wishes) {
+        this.wishes = wishes;
+    }
+
+    public void addAdvertisement(Advertisement advertisement){
+        this.wishes.add(advertisement);
+    }
+
 
     public void setName (String name){
         this.name=name;

@@ -49,8 +49,16 @@ public class Advertisement extends UriEntity{
     @OneToMany(mappedBy = "depicts", cascade = CascadeType.ALL)
     private Set<Picture> pictures = new HashSet<>();
 
-    @OneToOne(mappedBy = "wish", cascade = CascadeType.ALL)
-    private WishList wishList;
+    public Set<User> getUser() {
+        return user;
+    }
+
+    public void setUser(Set<User> user) {
+        this.user = user;
+    }
+
+    @ManyToMany(mappedBy = "wishes", cascade = CascadeType.ALL)
+    private Set<User> user;
 
     @OneToOne(mappedBy = "advertisement", cascade = CascadeType.REMOVE)
     private Purchase purchase;
@@ -98,8 +106,6 @@ public class Advertisement extends UriEntity{
     }
 
     public Set<Picture> getPictures() { return pictures; }
-
-    public WishList getWishList()  {return wishList;}
 
     public Purchase getPurchase() {
         return purchase;
