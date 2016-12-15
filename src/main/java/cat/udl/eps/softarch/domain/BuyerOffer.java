@@ -16,6 +16,10 @@ import java.time.ZonedDateTime;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
 public class BuyerOffer extends UriEntity{
 
+    @JsonIdentityReference(alwaysAsId=true)
+    @ManyToOne
+    private Advertisement advOffers;
+
     private String buyer_id;
 
     private int advertisement_id;
@@ -86,5 +90,9 @@ public class BuyerOffer extends UriEntity{
     public void setDate(ZonedDateTime date) {
         this.date = date;
     }
+
+    public Advertisement getAdvOffers() { return advOffers; }
+
+    public void setAdvOffers(Advertisement advOffers) { this.advOffers = advOffers; }
 
 }
