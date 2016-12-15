@@ -67,6 +67,7 @@ public class SendPrivateMessageStepDefs {
         pMessage.setBody(body);
         pMessage.setSender(sender);
         pMessage.setDestination(destination);
+        pMessage.setRead(false);
 
         String message = mapper.writeValueAsString(pMessage);
 

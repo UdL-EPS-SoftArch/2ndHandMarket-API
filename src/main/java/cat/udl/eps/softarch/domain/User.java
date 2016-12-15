@@ -96,13 +96,10 @@ public class User implements UserDetails {
 
     @Override
     @JsonIgnore
-    public String getPassword(){
-        return password;
-    }
+    public String getPassword(){ return password; }
 
-    public void setPassword(String password){
-        this.password=password;
-    }
+    @JsonSetter
+    public void setPassword(String password){ this.password=password; }
 
     @Override
     public boolean isAccountNonExpired() { return true; }

@@ -5,12 +5,10 @@ import cat.udl.eps.softarch.domain.Purchase;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import cat.udl.eps.softarch.repository.PurchaseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import org.hamcrest.Matchers;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,24 +47,10 @@ public class PurchaseStepDefs {
 
     @And("^I post a purchase to advertisement \"([^\"]*)\"$")
     public void iPostAPurchaseToAdvertisement(String advertisementId) throws Throwable {
-//        TODO. Use Spring objects.
-//        Advertisement advertisement = new Advertisement() {
-//            public String toString() {
-//                return "/advertisements/" + advertisementId;
-//            }
-//        };
-//        System.out.println(advertisement);
-//        // Set collections to null, they won't be needed and we'll avoid LazyInitializer trouble.
-//        advertisement.setPictures(null);
-//        advertisement.setTags(null);
-//
-//        Purchase purchase = new Purchase();
-//        purchase.setAdvertisement(advertisement);
-
-
-
-        String message = "{ \"advertisement\": \"/advertisements/" + advertisementId + "\" }";
-        // System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(purchase));
+        Advertisement advertisement = advertisementRepository.findOne(Long.parseLong(advertisementId));
+        Purchase purchase = new Purchase();
+        purchase.setAdvertisement(advertisement);
+        String message = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(purchase);
 
         result = mockMvc.perform(post("/purchases")
                 .contentType(MediaType.APPLICATION_JSON)
