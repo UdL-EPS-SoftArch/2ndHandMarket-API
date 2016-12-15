@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.engine.internal.JoinSequence;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "SoftArchUser") //Avoid collision with system table User in Postgres
@@ -65,6 +68,7 @@ public class User implements UserDetails {
     public String getCountry(){
         return country;
     }
+
 
     @Override
     public String getUsername(){

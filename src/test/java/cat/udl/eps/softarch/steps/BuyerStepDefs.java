@@ -8,6 +8,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import gherkin.lexer.Th;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,8 +62,6 @@ public class BuyerStepDefs {
 
     }
 
-
-
     @And("^I fill in name with \"([^\"]*)\"$")
     public void iFillInNameWith(String name) throws Throwable {
         buyer.setName(name);
@@ -77,5 +76,11 @@ public class BuyerStepDefs {
     @Then("^A buyer have id$")
     public void aBuyerHaveId() throws Throwable {
         org.junit.Assert.assertTrue(Objects.nonNull(buyer));
+    }
+
+
+    @Then("^A buyer add product$")
+    public void aBuerAddProduct()throws Throwable{
+        org.junit.Assert.assertEquals(buyer.getCount(),buyer.getProducts().size());
     }
 }

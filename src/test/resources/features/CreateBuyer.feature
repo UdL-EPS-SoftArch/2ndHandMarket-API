@@ -9,4 +9,5 @@ Feature: Create Buyer
     Then A buyer have id
     And I fill in name with "Matthew"
     And I fill in lastname with "Ghant"
-
+    And I buy a product "mouse"
+    Then A buyer add product
