@@ -53,8 +53,8 @@ public class AddWishListStepDefs {
 
     @Autowired private WebApplicationContext wac;
     @Autowired private ObjectMapper mapper;
-    @Autowired private MockMvc mockMvc;
-    @Autowired private ResultActions result;
+    private MockMvc mockMvc;
+    private ResultActions result;
     private User user;
 
     @Autowired private AdvertisementRepository advertisementRepository;
