@@ -2,23 +2,17 @@ package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.Softarch1617Application;
 import cat.udl.eps.softarch.domain.Advertisement;
-import cat.udl.eps.softarch.domain.User;
-
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
-import org.hamcrest.Matchers;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
-import org.springframework.core.io.Resource;
+import org.springframework.data.rest.webmvc.RestMediaTypes;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.annotation.DirtiesContext;
@@ -28,15 +22,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.xml.bind.DatatypeConverter;
-import java.net.URLConnection;
-
-import static cat.udl.eps.softarch.steps.AuthenticationStepDefs.authenticate;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -53,14 +42,10 @@ public class AddWishListStepDefs {
 
     @Autowired private WebApplicationContext wac;
     @Autowired private ObjectMapper mapper;
-    private MockMvc mockMvc;
-    private ResultActions result;
-    private User user;
-
     @Autowired private AdvertisementRepository advertisementRepository;
 
-    public Advertisement advertisement;
-    long idAdv;
+    private MockMvc mockMvc;
+    private ResultActions result;
 
     @Before
     public void setup() {
@@ -70,30 +55,32 @@ public class AddWishListStepDefs {
                 .build();
     }
 
+    @And("^I post the advertisement with title \"([^\"]*)\" to \"([^\"]*)\" wishlist$")
+    public void iPostAWishlistToAdvertisement(String title, String username) throws Throwable {
+        Advertisement advertisement = advertisementRepository.findByTitleContaining(title).get(0);
 
-    @Given("^There is an existing advertisement with title \"([^\"]*)\" and category \"([^\"]*)\" $")
-    public void thereIsAnAdvertisementWithTitleAndCategory(String title, String category) throws Throwable {
-        advertisement = new Advertisement();
-        advertisement.setTitle(title);
-        advertisement.setCategory(category);
-        advertisement = advertisementRepository.save(advertisement);
-        idAdv = advertisement.getId();
+        result = mockMvc.perform(post("/users/" + username +"/wishes")
+                    .contentType(RestMediaTypes.TEXT_URI_LIST)
+                    .content(advertisement.getUri()))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 
-    @And("^I post a wishlist to advertisement \"([^\"]*)\"$")
-    public void iPostAWishlistToAdvertisement(String username) throws Throwable {
-
-        String message = "/advertisements/" + idAdv;
-
-        result = mockMvc.perform(post("users/" + username +"/wishes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(message)
-                .accept(MediaType.APPLICATION_JSON)
-                .with(authenticate()))
-                .andDo(print());
+    @Then("^User \"([^\"]*)\" has a wishlist with (\\d+) advertisement$")
+    public void userHasAWishlistWithAdvertisement(String username, int count) throws Throwable {
+        result = mockMvc.perform(get("/users/" + username +"/wishes")
+                    .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(jsonPath("$._embedded.advertisements", hasSize(count)));
     }
 
+    @And("^The advertisement with title \"([^\"]*)\" has a wisher named \"([^\"]*)\"$")
+    public void theAdvertisementWithTitleHasAWisherNamed(String title, String username) throws Throwable {
+        Advertisement advertisement = advertisementRepository.findByTitleContaining(title).get(0);
 
-
-
+        result = mockMvc.perform(get(advertisement.getUri()+"/wishers")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(jsonPath("$._embedded.users[0].name", is(username)));
+    }
 }
