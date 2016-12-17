@@ -3,12 +3,10 @@ package cat.udl.eps.softarch.steps;
 import cat.udl.eps.softarch.Softarch1617Application;
 import cat.udl.eps.softarch.domain.Buyer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import gherkin.lexer.Th;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +78,7 @@ public class BuyerStepDefs {
 
 
     @Then("^A buyer add product$")
-    public void aBuerAddProduct()throws Throwable{
+    public void aBuyerAddProduct()throws Throwable{
         org.junit.Assert.assertEquals(buyer.getCount(),buyer.getProducts().size());
     }
 }
