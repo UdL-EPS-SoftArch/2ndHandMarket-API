@@ -3,7 +3,6 @@ package cat.udl.eps.softarch.steps;
 import cat.udl.eps.softarch.Softarch1617Application;
 import cat.udl.eps.softarch.domain.Buyer;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -61,8 +60,6 @@ public class BuyerStepDefs {
 
     }
 
-
-
     @And("^I fill in name with \"([^\"]*)\"$")
     public void iFillInNameWith(String name) throws Throwable {
         buyer.setName(name);
@@ -77,5 +74,11 @@ public class BuyerStepDefs {
     @Then("^A buyer have id$")
     public void aBuyerHaveId() throws Throwable {
         org.junit.Assert.assertTrue(Objects.nonNull(buyer));
+    }
+
+
+    @Then("^A buyer add product$")
+    public void aBuyerAddProduct()throws Throwable{
+        org.junit.Assert.assertEquals(buyer.getCount(),buyer.getProducts().size());
     }
 }
