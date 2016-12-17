@@ -1,13 +1,13 @@
 package cat.udl.eps.softarch.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
-import org.hibernate.engine.internal.JoinSequence;
+import com.fasterxml.jackson.annotation.*;
+import org.atteo.evo.inflector.English;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -16,11 +16,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
 @Table(name = "SoftArchUser") //Avoid collision with system table User in Postgres
 public class User implements UserDetails {
 
     @Id
     private String username;
+    private String uri;
     @NotBlank(message = "Name cannot be blank")
     private String name;
     private String lastname;
@@ -29,8 +31,9 @@ public class User implements UserDetails {
     private String country;
     @NotEmpty(message = "Is necessary a password")
     private String password;
-    @ManyToMany
-    private Set<Advertisement> wishes;
+    @JsonIdentityReference(alwaysAsId=true)
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Advertisement> wishes = new HashSet<>();
 
     public Set<Advertisement> getWishes() {
         return wishes;
@@ -44,6 +47,9 @@ public class User implements UserDetails {
         this.wishes.add(advertisement);
     }
 
+    public String getUri() {
+        return "/" + English.plural(StringUtils.uncapitalize(this.getClass().getSimpleName())) + "/" + username;
+    }
 
     public void setName (String name){
         this.name=name;
