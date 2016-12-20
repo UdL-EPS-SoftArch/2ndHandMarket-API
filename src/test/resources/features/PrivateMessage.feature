@@ -9,3 +9,4 @@ Feature: Send a private message
     And There is a private message with body "testBody"
     And There is a private message sent to user "testUser"
     And There is a private message sent from user "SenderUser"
+    And There are 1 private messages

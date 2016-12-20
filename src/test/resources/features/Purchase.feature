@@ -14,6 +14,7 @@ Feature: Purchase
     And There is a purchase with advertisement title "Santa"
     And There is a purchase with purchaser "user2"
     And There is a purchase with date
+    And There are 2 private messages
 
   @quick
   Scenario: Not logged in user creates a purchase
@@ -68,6 +69,7 @@ Feature: Purchase
     And I post a purchase to advertisement "2"
     Then The purchase status is 201
     And There is a purchase with advertisement title "Reindeer"
+    And There are 2 private messages
 
   @quick
   Scenario: Update advertisement if it has already been purchased

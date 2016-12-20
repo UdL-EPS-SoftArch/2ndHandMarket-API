@@ -1,8 +1,10 @@
 package cat.udl.eps.softarch.handler;
 
 import cat.udl.eps.softarch.domain.Advertisement;
+import cat.udl.eps.softarch.domain.PrivateMessage;
 import cat.udl.eps.softarch.domain.Purchase;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
+import cat.udl.eps.softarch.repository.PrivateMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
@@ -20,6 +22,19 @@ import java.time.ZonedDateTime;
 @RepositoryEventHandler(Purchase.class)
 public class PurchaseEventHandler {
     @Autowired private AdvertisementRepository advertisementRepository;
+    @Autowired private PrivateMessageRepository privateMessageRepository;
+
+    private final String sellerNotificationTemplate = "Dear %s,\n\n" +
+            "Your item %s has been sold.\n\n" +
+            "Total:\n" +
+            "$%f\n\n" +
+            "Thank you for using our platform.";
+
+    private final String buyerNotificationTemplate = "Dear %s,\n\n" +
+            "You have just bought: %s.\n\n" +
+            "Total:\n" +
+            "$%s\n\n" +
+            "Thank you for using our platform.";
 
     /**
      * Direct purchases only handler.
@@ -47,6 +62,22 @@ public class PurchaseEventHandler {
         Advertisement purchasing = purchase.getAdvertisement();
         Assert.isNull(advertisementRepository.findOne(purchasing.getId()).getPurchase(),
                       "This product has already been purchased.");
+
+        PrivateMessage sellerNotification = new PrivateMessage();
+        sellerNotification.setTitle("You have sold an item");
+        sellerNotification.setBody(String.format(sellerNotificationTemplate, loggedInAs, purchasing.getTitle(), purchasing.getPrice()));
+        sellerNotification.setSender("system");
+        sellerNotification.setDestination(purchasing.getOwner());
+        sellerNotification.setRead(false);
+        privateMessageRepository.save(sellerNotification);
+
+        PrivateMessage buyerNotification = new PrivateMessage();
+        buyerNotification.setTitle("You have bought an item");
+        buyerNotification.setBody(String.format(buyerNotificationTemplate, loggedInAs, purchasing.getTitle(), purchasing.getPrice()));
+        buyerNotification.setSender("system");
+        buyerNotification.setDestination(loggedInAs);
+        buyerNotification.setRead(false);
+        privateMessageRepository.save(buyerNotification);
     }
 
     /**
