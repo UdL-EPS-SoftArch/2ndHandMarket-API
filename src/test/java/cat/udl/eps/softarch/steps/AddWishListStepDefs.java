@@ -57,7 +57,7 @@ public class AddWishListStepDefs {
 
     @And("^I post the advertisement with title \"([^\"]*)\" to \"([^\"]*)\" wishlist$")
     public void iPostAWishlistToAdvertisement(String title, String username) throws Throwable {
-        Advertisement advertisement = advertisementRepository.findByTitleContaining(title).get(0);
+        Advertisement advertisement = advertisementRepository.findByTitleContainingIgnoreCase(title).get(0);
 
         result = mockMvc.perform(post("/users/" + username +"/wishes")
                     .contentType(RestMediaTypes.TEXT_URI_LIST)
@@ -76,7 +76,7 @@ public class AddWishListStepDefs {
 
     @And("^The advertisement with title \"([^\"]*)\" has a wisher named \"([^\"]*)\"$")
     public void theAdvertisementWithTitleHasAWisherNamed(String title, String username) throws Throwable {
-        Advertisement advertisement = advertisementRepository.findByTitleContaining(title).get(0);
+        Advertisement advertisement = advertisementRepository.findByTitleContainingIgnoreCase(title).get(0);
 
         result = mockMvc.perform(get(advertisement.getUri()+"/wishers")
                 .accept(MediaType.APPLICATION_JSON))
