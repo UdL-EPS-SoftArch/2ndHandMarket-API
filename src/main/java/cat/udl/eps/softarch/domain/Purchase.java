@@ -1,16 +1,17 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="uri")
@@ -19,10 +20,8 @@ public class Purchase extends UriEntity {
 
     private String purchaser;
 
-    @JsonIdentityReference(alwaysAsId=true)
-    @OneToOne
-    @NotNull
-    Advertisement advertisement;
+    @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
+    private Set<Advertisement> advertisements = new HashSet<>();
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private ZonedDateTime createdAt;
@@ -39,12 +38,12 @@ public class Purchase extends UriEntity {
         this.purchaser = purchaser;
     }
 
-    public Advertisement getAdvertisement() {
-        return advertisement;
+    public Set<Advertisement> getAdvertisements() {
+        return advertisements;
     }
 
-    public void setAdvertisement(Advertisement advertisement) {
-        this.advertisement = advertisement;
+    public void setAdvertisement(Set<Advertisement> advertisement) {
+        this.advertisements = advertisement;
     }
 
     public ZonedDateTime getCreatedAt() {

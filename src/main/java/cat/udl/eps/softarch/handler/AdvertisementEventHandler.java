@@ -44,9 +44,9 @@ public class AdvertisementEventHandler {
         ZonedDateTime now = ZonedDateTime.now();
         advertisement.setModifiedAt(now);
 
-        // A purchased advertisement cannot be edited
-        List<Purchase> dbPurchase = purchaseRepository.findByAdvertisement(advertisement);
-        Assert.isTrue(dbPurchase.size() == 0, "A purchased advertisement cannot be edited");
+        // A purchased advertisement cannot be edited.
+        Advertisement dbAdvertisement = advertisementRepository.findOne(advertisement.getId());
+        Assert.isNull(dbAdvertisement.getPurchase(), "A purchased advertisement cannot be edited");
     }
 
     @HandleBeforeDelete
