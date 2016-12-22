@@ -5,6 +5,7 @@ import cat.udl.eps.softarch.domain.Purchase;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import cat.udl.eps.softarch.repository.PurchaseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -50,6 +51,7 @@ public class PurchaseStepDefs {
         Advertisement advertisement = advertisementRepository.findOne(Long.parseLong(advertisementId));
         Purchase purchase = new Purchase();
         purchase.setAdvertisement(advertisement);
+        purchase.setTotal(0); // Requires a value; but the server should ignore this user's value.
         String message = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(purchase);
 
         result = mockMvc.perform(post("/purchases")
@@ -105,6 +107,11 @@ public class PurchaseStepDefs {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.createdAt", Matchers.notNullValue()))
                 .andDo(print());
+    }
+
+    @And("^There is a purchase with total \"([^\"]*)\"$")
+    public void thereIsAPurchaseWithTotal(double total) throws Throwable {
+        thereIsA("$.total", total);
     }
 
     @And("^There are (\\d+) purchases$")

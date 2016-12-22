@@ -14,6 +14,7 @@ Feature: Purchase
     And There is a purchase with advertisement title "Santa"
     And There is a purchase with purchaser "user2"
     And There is a purchase with date
+    And There is a purchase with total "2016.0"
     And There are 2 private messages
 
   @quick
@@ -69,6 +70,7 @@ Feature: Purchase
     And I post a purchase to advertisement "2"
     Then The purchase status is 201
     And There is a purchase with advertisement title "Reindeer"
+    And There is a purchase with total "6102"
     And There are 2 private messages
 
   @quick

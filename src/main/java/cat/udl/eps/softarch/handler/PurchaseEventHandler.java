@@ -63,6 +63,9 @@ public class PurchaseEventHandler {
         Assert.isNull(advertisementRepository.findOne(purchasing.getId()).getPurchase(),
                       "This product has already been purchased.");
 
+        // Total is gathered from the advertisement that the user is purchasing.
+        purchase.setTotal(purchasing.getPrice());
+
         PrivateMessage sellerNotification = new PrivateMessage();
         sellerNotification.setTitle("You have sold an item");
         sellerNotification.setBody(String.format(sellerNotificationTemplate, loggedInAs, purchasing.getTitle(), purchasing.getPrice()));

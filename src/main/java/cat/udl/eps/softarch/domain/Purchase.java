@@ -8,12 +8,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 @Entity
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="uri")
-@JsonIgnoreProperties(value = {"purchaser", "createdAt"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"purchaser", "createdAt", "total"}, allowGetters = true)
 public class Purchase extends UriEntity {
 
     private String purchaser;
@@ -25,6 +26,10 @@ public class Purchase extends UriEntity {
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private ZonedDateTime createdAt;
+
+    // Purchase total $. That is advertisement(s) price, or offer.
+    @DecimalMin(message = "Total has to be bigger than 0.01", value = "0.01")
+    private Double total;
 
     public String getPurchaser() {
         return purchaser;
@@ -48,5 +53,13 @@ public class Purchase extends UriEntity {
 
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }
