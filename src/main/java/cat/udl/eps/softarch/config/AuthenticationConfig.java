@@ -46,6 +46,13 @@ public class AuthenticationConfig extends GlobalAuthenticationConfigurerAdapter 
             user2.setName("User 2");
             userRepository.save(user2);
         }
+        if (!userRepository.exists("system")) {
+            User system = new User();
+            system.setUsername("system");
+            system.setPassword("$2a$10$B1dcscvS/lgiBnGdkhhupew8AhbjqUL7TjdA2ggvxQhs5jN7KVSMC");
+            system.setName("System");
+            userRepository.save(system);
+        }
 
         //Testing users, when not deployed in Heroku
         if(!environment.acceptsProfiles("heroku") &&

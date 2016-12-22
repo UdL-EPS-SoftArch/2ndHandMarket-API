@@ -9,6 +9,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext
 @RunWith(SpringRunner.class)
 @WebAppConfiguration
-public class SendPrivateMessageStepDefs {
+public class PrivateMessageStepDefs {
 
     @Autowired
     private WebApplicationContext wac;
@@ -75,6 +76,15 @@ public class SendPrivateMessageStepDefs {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(message)
                 .accept(MediaType.APPLICATION_JSON))
+                .andDo(print());
+    }
+
+    @And("^There are (\\d+) private messages$")
+    public void thereArePurchases(int numPurchases) throws Throwable {
+        result = mockMvc.perform(get("/privateMessages")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.privateMessages.*", Matchers.hasSize(numPurchases)))
                 .andDo(print());
     }
 
