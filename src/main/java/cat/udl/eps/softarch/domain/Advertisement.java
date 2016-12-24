@@ -1,6 +1,7 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotBlank;
@@ -18,7 +19,7 @@ import java.util.Set;
  */
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="uri")
-@JsonIgnoreProperties(value = {"owner", "createdAt"}, allowGetters = true)
+@JsonIgnoreProperties(value = {"owner", "createdAt", "purchase"}, allowGetters = true)
 public class Advertisement extends UriEntity{
 
     @NotBlank(message = "Title cannot be blank")
@@ -52,7 +53,8 @@ public class Advertisement extends UriEntity{
     @ManyToMany(mappedBy = "wishes", cascade = CascadeType.ALL)
     private Set<User> wishers = new HashSet<>();
 
-    @OneToOne(mappedBy = "advertisement", cascade = CascadeType.REMOVE)
+    @JsonIdentityReference(alwaysAsId=true)
+    @ManyToOne
     private Purchase purchase;
 
     public Set<User> getWishers() { return wishers; }

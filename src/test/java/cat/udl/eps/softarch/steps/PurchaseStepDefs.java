@@ -5,6 +5,7 @@ import cat.udl.eps.softarch.domain.Purchase;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import cat.udl.eps.softarch.repository.PurchaseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -19,8 +20,12 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import static cat.udl.eps.softarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -46,11 +51,20 @@ public class PurchaseStepDefs {
     }
 
     @And("^I post a purchase to advertisement \"([^\"]*)\"$")
-    public void iPostAPurchaseToAdvertisement(String advertisementId) throws Throwable {
-        Advertisement advertisement = advertisementRepository.findOne(Long.parseLong(advertisementId));
-        Purchase purchase = new Purchase();
-        purchase.setAdvertisement(advertisement);
-        String message = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(purchase);
+    public void iPostAPurchaseToAdvertisement(long advertisementId) throws Throwable {
+        String message = "{ \"advertisements\": [\"/advertisement/" + advertisementId + "\"] }";
+
+        result = mockMvc.perform(post("/purchases")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(message)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(authenticate()))
+                .andDo(print());
+    }
+
+    @And("^I post a mass purchase to advertisements \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void iPostAMassPurchaseToAdvertisementsAnd(String firstAdvertisementId, String secondAdvertisementId) throws Throwable {
+        String message = "{ \"advertisements\": [\"/advertisement/" + firstAdvertisementId + "\", \"/advertisement/" + secondAdvertisementId + "\"] }";
 
         result = mockMvc.perform(post("/purchases")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -62,9 +76,7 @@ public class PurchaseStepDefs {
 
     @And("^I post a purchase to no advertisement$")
     public void iPostAPurchaseToNoAdvertisement() throws Throwable {
-        Purchase purchase = new Purchase();
-
-        String message = mapper.writeValueAsString(purchase);
+        String message = "{ \"advertisements\": [] }";
 
         result = mockMvc.perform(post("/purchases")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,14 +91,35 @@ public class PurchaseStepDefs {
         result.andExpect(status().is(status));
     }
 
-    @And("^There is a purchase with advertisement title \"([^\"]*)\"$")
-    public void thereIsAPurchaseWithAdvertisementTitle(String advertisementTitle) throws Throwable {
-        String advertisementLocation = "/purchases/1/advertisement";
+    @And("^There is an advertisement with purchase")
+    public void thereIsAnAdvertisementWithPurchase() throws Throwable {
+        String advertisementLocation = "/advertisements/1/purchase";
 
         result = mockMvc.perform(get(advertisementLocation)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.title", is(advertisementTitle)))
+                .andDo(print());
+    }
+
+    @Then("^There is a purchase with (\\d+) advertisements$")
+    public void thereIsAPurchaseWithAdvertisements(int numberAdvertisements) throws Throwable {
+        String advertisementLocation = "/purchases/1/advertisements";
+
+        result = mockMvc.perform(get(advertisementLocation)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.advertisements.*", Matchers.hasSize(numberAdvertisements)))
+                .andDo(print());
+    }
+
+    @And("^There is a purchase with advertisement title \"([^\"]*)\"$")
+    public void thereIsAPurchaseWithAdvertisementTitle(String advertisementTitle) throws Throwable {
+        String advertisementLocation = "/purchases/1/advertisements";
+
+        result = mockMvc.perform(get(advertisementLocation)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$._embedded.advertisements[0].title", is(advertisementTitle)))
                 .andDo(print());
     }
 
@@ -97,7 +130,7 @@ public class PurchaseStepDefs {
 
     @And("^There is a purchase with date$")
     public void thereIsAPurchaseWithDate() throws Throwable {
-        String advertisementLocation = "/purchases/1/advertisement";
+        String advertisementLocation = "/purchases/1";
 
         // We can't verify the exact date that the DB recorded, but we can verify that it is set.
         result = mockMvc.perform(get(advertisementLocation)
@@ -105,6 +138,11 @@ public class PurchaseStepDefs {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.createdAt", Matchers.notNullValue()))
                 .andDo(print());
+    }
+
+    @And("^There is a purchase with total \"([^\"]*)\"$")
+    public void thereIsAPurchaseWithTotal(double total) throws Throwable {
+        thereIsA("$.total", total);
     }
 
     @And("^There are (\\d+) purchases$")
@@ -118,7 +156,7 @@ public class PurchaseStepDefs {
 
     @And("^I put purchase \"([^\"]*)\" with advertisement \"([^\"]*)\"$")
     public void iPutPurchaseWithAdvertisement(String purchaseId, String advertisementId) throws Throwable {
-        String message = "{ \"advertisement\": \"/advertisements/" + advertisementId + "\" }";
+        String message = "{ \"advertisements\": [\"/advertisement/" + advertisementId + "\"] }";
 
         result = mockMvc.perform(put("/purchases/" + purchaseId)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -130,7 +168,7 @@ public class PurchaseStepDefs {
 
     @And("^I patch purchase \"([^\"]*)\" with advertisement \"([^\"]*)\"$")
     public void iPatchPurchaseWithAdvertisement(String purchaseId, String advertisementId) throws Throwable {
-        String message = "{ \"advertisement\": \"/advertisements/" + advertisementId + "\" }";
+        String message = "{ \"advertisements\": [\"/advertisement/" + advertisementId + "\"] }";
 
         result = mockMvc.perform(put("/purchases/" + purchaseId)
                 .contentType(MediaType.APPLICATION_JSON)

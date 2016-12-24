@@ -86,7 +86,6 @@ public class PostAdvertisementStepDefs {
 
     @And("^I put the advertisement with id \"([^\"]*)\"$")
     public void iPutTheAdvertisement(Long id) throws Throwable {
-        ad.setPurchase(new Purchase());
         String message = mapper.writeValueAsString(ad);
 
         result = mockMvc.perform(put("/advertisements/" + id)
