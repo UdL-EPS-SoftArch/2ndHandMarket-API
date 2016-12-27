@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 @JsonIgnoreProperties(value = {"purchaser", "createdAt"}, allowGetters = true)
 public class Purchase extends UriEntity {
 
-    private String purchaser;
+    private User purchaser;
 
     @JsonIdentityReference(alwaysAsId=true)
     @OneToOne
@@ -26,11 +26,11 @@ public class Purchase extends UriEntity {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private ZonedDateTime createdAt;
 
-    public String getPurchaser() {
+    public User getPurchaser() {
         return purchaser;
     }
 
-    public void setPurchaser(String purchaser) {
+    public void setPurchaser(User purchaser) {
         this.purchaser = purchaser;
     }
 

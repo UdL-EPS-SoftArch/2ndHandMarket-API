@@ -2,7 +2,9 @@ package cat.udl.eps.softarch.handler;
 
 import cat.udl.eps.softarch.domain.Advertisement;
 import cat.udl.eps.softarch.domain.Purchase;
+import cat.udl.eps.softarch.domain.User;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
+import cat.udl.eps.softarch.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
@@ -14,13 +16,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import javax.jws.soap.SOAPBinding;
 import java.time.ZonedDateTime;
 
 @Component
 @RepositoryEventHandler(Purchase.class)
 public class PurchaseEventHandler {
     @Autowired private AdvertisementRepository advertisementRepository;
-
+    @Autowired private UserRepository userRepository;
     /**
      * Direct purchases only handler.
      * @param purchase
@@ -30,12 +33,13 @@ public class PurchaseEventHandler {
     @PreAuthorize("hasRole('USER')")
     public void handlePurchasePreCreate(Purchase purchase) {
         String loggedInAs = SecurityContextHolder.getContext().getAuthentication().getName();
+        User purchaser = userRepository.findOne(loggedInAs);
 
         ZonedDateTime now = ZonedDateTime.now();
         purchase.setCreatedAt(now);
 
         // The current purchaser; buying through accepting an offer will have a different handler.
-        purchase.setPurchaser(loggedInAs);
+        purchase.setPurchaser(purchaser);
 
         // A product cannot be purchased by their owner
         Assert.isTrue(!loggedInAs.equals(purchase.getAdvertisement().getOwner()),
