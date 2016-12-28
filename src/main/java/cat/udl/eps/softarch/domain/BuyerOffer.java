@@ -94,6 +94,4 @@ public class BuyerOffer extends UriEntity{
     public Advertisement getAdvOffers() { return advOffers; }
 
     public void setAdvOffers(Advertisement advOffers) { this.advOffers = advOffers; }
-
-
 }
