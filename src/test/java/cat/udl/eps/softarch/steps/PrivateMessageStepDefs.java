@@ -1,33 +1,18 @@
 package cat.udl.eps.softarch.steps;
 
-import cat.udl.eps.softarch.Softarch1617Application;
-import cat.udl.eps.softarch.domain.Advertisement;
 import cat.udl.eps.softarch.domain.PrivateMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.hamcrest.Matchers;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.LongSummaryStatistics;
-import java.util.Random;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,13 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Created by jap9. modified 28/09/16.
  */
-
-@ContextConfiguration(
-        classes = {Softarch1617Application.class}, loader = SpringBootContextLoader.class)
-@DirtiesContext
-@RunWith(SpringRunner.class)
-@WebAppConfiguration
-public class PrivateMessageStepDefs {
+public class PrivateMessageStepDefs extends AbstractStepDefs {
 
     @Autowired
     private WebApplicationContext wac;
