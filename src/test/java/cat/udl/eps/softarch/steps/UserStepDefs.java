@@ -112,4 +112,14 @@ public class UserStepDefs extends AbstractStepDefs {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", is(username)));
     }
+
+    @Then("^There is a registered user with display name \"([^\"]*)\"$")
+    public void thereIsARegisteredUserWithDisplayName(String displayName) throws Throwable {
+        result = mockMvc.perform(
+                get("/users/{username}", displayName)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.displayName", is(displayName)));
+    }
 }
