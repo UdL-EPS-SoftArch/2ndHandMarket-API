@@ -20,7 +20,8 @@ public class UserHandler {
     @HandleBeforeCreate
     @Transactional
     public void handleUserPreCreate(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null)
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     }
 
     /**
@@ -29,6 +30,7 @@ public class UserHandler {
     @HandleBeforeSave
     @Transactional
     public void handleUserPreSave(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null)
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     }
 }

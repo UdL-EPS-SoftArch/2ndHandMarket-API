@@ -1,21 +1,14 @@
 package cat.udl.eps.softarch.steps;
 
-import cat.udl.eps.softarch.Softarch1617Application;
 import cat.udl.eps.softarch.domain.Buyer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootContextLoader;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,14 +20,7 @@ import java.util.Objects;
 /**
  * Created by jennifer on 27/09/16.
  */
-
-@ContextConfiguration(
-        classes = {Softarch1617Application.class}, loader = SpringBootContextLoader.class
-)
-@DirtiesContext
-@RunWith(SpringRunner.class)
-@WebAppConfiguration
-public class BuyerStepDefs {
+public class BuyerStepDefs extends AbstractStepDefs {
 
     private static final Logger logger = LoggerFactory.getLogger(BuyerStepDefs.class);
 

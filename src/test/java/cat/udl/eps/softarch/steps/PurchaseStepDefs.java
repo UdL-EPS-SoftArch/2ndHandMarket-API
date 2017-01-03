@@ -1,11 +1,8 @@
 package cat.udl.eps.softarch.steps;
 
-import cat.udl.eps.softarch.domain.Advertisement;
-import cat.udl.eps.softarch.domain.Purchase;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import cat.udl.eps.softarch.repository.PurchaseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -20,18 +17,14 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
 import static cat.udl.eps.softarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class PurchaseStepDefs {
+public class PurchaseStepDefs  extends AbstractStepDefs {
     private static final Logger logger = LoggerFactory.getLogger(PurchaseStepDefs.class);
 
     @Autowired private WebApplicationContext wac;

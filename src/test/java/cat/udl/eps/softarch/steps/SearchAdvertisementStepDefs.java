@@ -1,13 +1,11 @@
 package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.domain.Advertisement;
-import cucumber.api.PendingException;
+import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
-import cat.udl.eps.softarch.repository.AdvertisementRepository;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,11 +13,10 @@ import java.util.Set;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-
 /**
  * Created by srblimp.
  */
-public class SearchAdvertisementStepDefs {
+public class SearchAdvertisementStepDefs extends AbstractStepDefs {
 
     @Autowired private AdvertisementRepository advertisementRepository;
 

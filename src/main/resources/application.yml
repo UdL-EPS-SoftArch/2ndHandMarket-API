@@ -1,0 +1,14 @@
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: DJ560FbKB04XCcouTfpzVChcNJhHxw3P
+      clientSecret: fEoRBeJeLYPok8R-Wq_JlJ1TzfjOXDrLxIBQDysWBDKlwTSwAI6FphoC8M6_z558
+      accessTokenUri: https://softarch-1617.eu.auth0.com/oauth/token
+      userAuthorizationUri: https://softarch-1617.eu.auth0.com/authorize
+      tokenName: id_token
+      authenticationScheme: header
+      clientAuthenticationScheme: header
+    resource:
+      userInfoUri: https://softarch-1617.eu.auth0.com/userinfo
