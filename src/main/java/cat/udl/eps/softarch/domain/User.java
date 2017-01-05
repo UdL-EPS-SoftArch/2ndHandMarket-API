@@ -22,6 +22,7 @@ public class User implements UserDetails {
     @Id
     private String username;
     private String uri;
+    private String displayName;
     @NotBlank(message = "Name cannot be blank")
     private String name;
     private String lastname;
@@ -51,6 +52,11 @@ public class User implements UserDetails {
 
     public void setName (String name){
         this.name=name;
+
+        // Display name defaults to user name.
+        if (this.getDisplayName() == null || this.getDisplayName().isEmpty()) {
+            this.setDisplayName(this.getName());
+        }
     }
 
     public String getName(){
@@ -121,5 +127,13 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_USER");
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 }

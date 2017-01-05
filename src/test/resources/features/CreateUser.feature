@@ -13,4 +13,5 @@ Feature: User Management
     And I can login with username "johnsmith" and password "password"
     When I update username "johnsmith" password to "PassWord"
     Then I can login with username "johnsmith" and password "PassWord"
+    And There is a registered user with display name "johnsmith"
     And I cannot login with username "johnsmith" and password "password"
