@@ -5,6 +5,7 @@ import cat.udl.eps.softarch.domain.PrivateMessage;
 import cat.udl.eps.softarch.domain.Purchase;
 import cat.udl.eps.softarch.domain.User;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
+import cat.udl.eps.softarch.repository.UserRepository;
 import cat.udl.eps.softarch.repository.PrivateMessageRepository;
 import cat.udl.eps.softarch.repository.PurchaseRepository;
 import cat.udl.eps.softarch.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import javax.jws.soap.SOAPBinding;
 import java.time.ZonedDateTime;
 import java.util.Set;
 

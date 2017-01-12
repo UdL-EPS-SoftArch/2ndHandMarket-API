@@ -1,18 +1,15 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.validation.constraints.DecimalMin;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="uri")
@@ -31,6 +28,7 @@ public class Purchase extends UriEntity {
     @DecimalMin(message = "Total has to be bigger than 0.01", value = "0.01")
     private Double total;
 
+
     public User getPurchaser() {
         return purchaser;
     }
@@ -39,12 +37,12 @@ public class Purchase extends UriEntity {
         this.purchaser = purchaser;
     }
 
-    public Set<Advertisement> getAdvertisements() {
-        return advertisements;
+    public Advertisement getAdvertisement() {
+        return advertisement;
     }
 
-    public void setAdvertisement(Set<Advertisement> advertisement) {
-        this.advertisements = advertisement;
+    public void setAdvertisement(Advertisement advertisement) {
+        this.advertisement = advertisement;
     }
 
     public ZonedDateTime getCreatedAt() {
@@ -53,13 +51,5 @@ public class Purchase extends UriEntity {
 
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public double getTotal() {
-        return total;
-    }
-
-    public void setTotal(double total) {
-        this.total = total;
     }
 }
