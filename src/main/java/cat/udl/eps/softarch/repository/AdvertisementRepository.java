@@ -20,5 +20,5 @@ public interface AdvertisementRepository extends PagingAndSortingRepository<Adve
 
     List<Advertisement> findByTitleContainingIgnoreCase(@Param("word") String word);
 
-    List<Advertisement> findByCategory(@Param("category") String category);
+    List<Advertisement> findByCategoryIgnoreCase(@Param("category") String category);
 }
