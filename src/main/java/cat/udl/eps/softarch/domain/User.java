@@ -36,7 +36,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.REMOVE)
     private Set<Purchase> purchases = new HashSet<>();
-    
+
     public Set<Purchase> getPurchases() {
         return purchases;
     }
