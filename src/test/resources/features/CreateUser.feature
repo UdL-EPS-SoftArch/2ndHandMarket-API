@@ -33,3 +33,23 @@ Feature: User Management
     Then I can login with username "johnsmith" and password "PassWord"
     And There is a registered user with display name "johnsmith"
     And I cannot login with username "johnsmith" and password "password"
+
+  Scenario: Delete user
+    Given I create an user with username "johnsmith" and password "password"
+    And I login as "johnsmith" with password "password"
+    Then I delete username "johnsmith"
+    Then The user status is 204
+    Then I cannot login with username "johnsmith" and password "password"
+
+  Scenario: Delete an user which doesn't belong to oneself
+    Given I create an user with username "johnsmith" and password "password"
+    Given I create an user with username "yoda" and password "password"
+    Then I login as "johnsmith" with password "password"
+    Then I can login with username "yoda" and password "password"
+    Then I delete username "yoda"
+    Then The user status is 500
+    Then I can login with username "yoda" and password "password"
+    Then I delete username "yoda"
+    Then The user status is 500
+    Then I can login with username "johnsmith" and password "password"
+    Then I can login with username "yoda" and password "password"

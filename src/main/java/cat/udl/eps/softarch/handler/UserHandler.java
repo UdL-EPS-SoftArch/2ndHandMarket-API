@@ -4,8 +4,11 @@ import cat.udl.eps.softarch.domain.User;
 import cat.udl.eps.softarch.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
+import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
 import org.springframework.data.rest.core.annotation.HandleBeforeSave;
 import org.springframework.data.rest.core.annotation.RepositoryEventHandler;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,5 +45,12 @@ public class UserHandler {
 
         // For some reason, PreSave doesn't call setters.
         user.setName(user.getName());
+    }
+
+    @HandleBeforeDelete
+    @PreAuthorize("hasRole('USER')")
+    public void handleUserPreDelete(User user) {
+        String loggedInAs = SecurityContextHolder.getContext().getAuthentication().getName();
+        Assert.isTrue(loggedInAs.equals(user.getName()));
     }
 }

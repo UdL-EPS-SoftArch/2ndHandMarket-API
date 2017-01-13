@@ -2,6 +2,7 @@ package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static cat.udl.eps.softarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -96,6 +98,15 @@ public class UserStepDefs extends AbstractStepDefs {
                         .content(message)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print());
+    }
+
+    @Then("^I delete username \"([^\"]*)\"$")
+    public void iDeleteUsername(String username) throws Throwable {
+        result = mockMvc.perform(delete("/users/{username}", username)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(authenticate()))
+                        .andDo(print());
     }
 
     @Then("^There is a registered user with username \"([^\"]*)\"$")
