@@ -51,13 +51,12 @@ public class Advertisement extends UriEntity{
     private Set<Picture> pictures = new HashSet<>();
 
     @ManyToMany(mappedBy = "wishes", cascade = CascadeType.ALL)
-    private Set<User> wishers = new HashSet<>();
+    private Set<User> wishes = new HashSet<>();
 
     @JsonIdentityReference(alwaysAsId=true)
     @ManyToOne
     private Purchase purchase;
 
-    public Set<User> getWishers() { return wishers; }
 
     /* technical product data */
     private String category;
@@ -76,6 +75,7 @@ public class Advertisement extends UriEntity{
     public String getOwner() {
         return owner;
     }
+    public Set<User> getWishes() { return wishes; }
 
     public ZonedDateTime getCreatedAt() {
         return createdAt;
