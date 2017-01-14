@@ -39,7 +39,11 @@ public class UserHandler {
      */
     @HandleBeforeSave
     @Transactional
+    @PreAuthorize("hasRole('USER')")
     public void handleUserPreSave(User user) {
+        String loggedInAs = SecurityContextHolder.getContext().getAuthentication().getName();
+        Assert.isTrue(loggedInAs.equals(user.getName()));
+
         if (user.getPassword() != null)
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 

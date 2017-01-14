@@ -73,13 +73,12 @@ public class UserStepDefs extends AbstractStepDefs {
         String message = String.format("{\"username\":\"%s\",\"name\":\"%s\",\"password\":\"%s\"}",
                 username, username, password);
 
-        result = mockMvc.perform(
-                put("/users/{username}", username)
+        result = mockMvc.perform(put("/users/{username}", username)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(message)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk());
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(authenticate()))
+                        .andDo(print());
     }
 
     @When("^I create an user with username \"([^\"]*)\" and password \"([^\"]*)\"$")
