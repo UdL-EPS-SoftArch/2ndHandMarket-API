@@ -8,7 +8,7 @@ Feature: Purchase
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"
     And I login as "user2" with password "password"
-    And I post a purchase to advertisement "1" who "user"
+    And I post a purchase to advertisement "1"
     Then The purchase status is 201
     And There are 1 purchases
     And There is an advertisement with purchase
@@ -23,7 +23,7 @@ Feature: Purchase
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"
     And I'm not logged in
-    And I post a purchase to advertisement "1" who "none"
+    And I post a purchase to advertisement "1"
     Then The purchase status is 401
     And There are 0 purchases
 
@@ -32,14 +32,14 @@ Feature: Purchase
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"
     And I login as "user2" with password "password"
-    And I "user2" post a purchase to no advertisement
+    And I post a purchase to no advertisement
     Then The purchase status is 500
     Then There are 0 purchases
 
   @quick
   Scenario: Create a purchase to a non-existing product
     Given I login as "user" with password "password"
-    And I post a purchase to advertisement "1" who "user"
+    And I post a purchase to advertisement "1"
     Then The purchase status is 500
     And There are 0 purchases
 
@@ -47,7 +47,7 @@ Feature: Purchase
   Scenario: Create a purchase to themselves
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"
-    And I post a purchase to advertisement "1" who "user"
+    And I post a purchase to advertisement "1"
     Then The purchase status is 500
     And There are 0 purchases
 
@@ -56,9 +56,9 @@ Feature: Purchase
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"
     And I login as "user2" with password "password"
-    And I post a purchase to advertisement "1" who "user2"
+    And I post a purchase to advertisement "1"
     And I login as "user3" with password "password"
-    And I post a purchase to advertisement "1" who "user3"
+    And I post a purchase to advertisement "1"
     Then The purchase status is 500
     And There are 1 purchases
 
@@ -68,7 +68,7 @@ Feature: Purchase
     And I post an advertisement with title "Santa" and price "2016"
     And I post an advertisement with title "Reindeer" and price "6102"
     And I login as "user2" with password "password"
-    And I post a purchase to advertisement "2" who "user2"
+    And I post a purchase to advertisement "2"
     Then The purchase status is 201
     And There is a purchase with advertisement title "Reindeer"
     And There is a purchase with total "6102"
@@ -82,7 +82,7 @@ Feature: Purchase
     And I fill in price with "42"
     And I post the advertisement
     Then I login as "user2" with password "password"
-    Then I post a purchase to advertisement "1" who "user2"
+    Then I post a purchase to advertisement "1"
     Then I login as "user" with password "password"
     Then I put the advertisement with id "1"
     Then The status is 500
@@ -92,7 +92,7 @@ Feature: Purchase
     Given I login as "user" with password "password"
     When I post an advertisement with title "Ponies" and price "42"
     Then I login as "user2" with password "password"
-    Then I post a purchase to advertisement "1" who "user2"
+    Then I post a purchase to advertisement "1"
     Then I login as "user" with password "password"
     Then I delete the advertisement with id "1"
     Then The status is 500
@@ -102,7 +102,7 @@ Feature: Purchase
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"
     And I login as "user2" with password "password"
-    And I post a purchase to advertisement "1" who "user2"
+    And I post a purchase to advertisement "1"
     And I put purchase "1" with advertisement "1"
     Then The purchase status is 500
     And There are 1 purchases
@@ -117,7 +117,7 @@ Feature: Purchase
     Given I login as "user" with password "password"
     And I post an advertisement with title "Santa" and price "2016"
     And I login as "user2" with password "password"
-    And I post a purchase to advertisement "1" who "user2"
+    And I post a purchase to advertisement "1"
     And I delete purchase "1"
     Then The purchase status is 500
     And There are 1 purchases
@@ -129,7 +129,7 @@ Feature: Purchase
     And I post an advertisement with title "Santa" and price "2016"
     And I post an advertisement with title "Claus" and price "2017"
     And I login as "user2" with password "password"
-    And I "user2" post a mass purchase to advertisements "1" and "2"
+    And I post a mass purchase to advertisements "1" and "2"
     Then The purchase status is 201
     Then There are 1 purchases
     Then There is a purchase with 2 advertisements

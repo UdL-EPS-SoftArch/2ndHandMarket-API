@@ -51,7 +51,7 @@ public class Advertisement extends UriEntity{
     private Set<Picture> pictures = new HashSet<>();
 
     @ManyToMany(mappedBy = "wishes", cascade = CascadeType.ALL)
-    private Set<User> wishes = new HashSet<>();
+    private Set<User> wishers = new HashSet<>();
 
     @JsonIdentityReference(alwaysAsId=true)
     @ManyToOne
@@ -75,7 +75,7 @@ public class Advertisement extends UriEntity{
     public String getOwner() {
         return owner;
     }
-    public Set<User> getWishes() { return wishes; }
+    public Set<User> getWishers() { return wishers; }
 
     public ZonedDateTime getCreatedAt() {
         return createdAt;

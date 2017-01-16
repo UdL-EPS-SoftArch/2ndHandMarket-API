@@ -1,17 +1,15 @@
 package cat.udl.eps.softarch.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +19,7 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"purchaser", "createdAt", "total"}, allowGetters = true)
 public class Purchase extends UriEntity {
 
+    @ManyToOne
     private User purchaser;
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)

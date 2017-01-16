@@ -3,7 +3,6 @@ package cat.udl.eps.softarch.domain;
 import com.fasterxml.jackson.annotation.*;
 import org.atteo.evo.inflector.English;
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,13 +29,13 @@ public class User implements UserDetails {
     private String email;
     private Date birthday;
     private String country;
-    @NotEmpty(message = "Is necessary a password")
     private String password;
+
     @JsonIdentityReference(alwaysAsId=true)
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Advertisement> wishes = new HashSet<>();
 
-    @OneToMany(mappedBy = "purchaser", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "purchaser", fetch = FetchType.EAGER)
     private Set<Purchase> purchases = new HashSet<>();
 
     public Set<Purchase> getPurchases() {
