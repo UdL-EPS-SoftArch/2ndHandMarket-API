@@ -4,6 +4,8 @@ import cat.udl.eps.softarch.domain.Advertisement;
 import cat.udl.eps.softarch.domain.Purchase;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import cat.udl.eps.softarch.repository.PurchaseRepository;
+import org.apache.tomcat.jni.User;
+import org.omg.PortableInterceptor.USER_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.HandleBeforeCreate;
 import org.springframework.data.rest.core.annotation.HandleBeforeDelete;
@@ -33,6 +35,7 @@ public class AdvertisementEventHandler {
         advertisement.setModifiedAt(now);
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
         advertisement.setOwner(username);
     }
 

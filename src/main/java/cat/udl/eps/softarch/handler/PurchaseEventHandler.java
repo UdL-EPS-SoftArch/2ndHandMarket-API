@@ -3,8 +3,10 @@ package cat.udl.eps.softarch.handler;
 import cat.udl.eps.softarch.domain.Advertisement;
 import cat.udl.eps.softarch.domain.PrivateMessage;
 import cat.udl.eps.softarch.domain.Purchase;
+import cat.udl.eps.softarch.domain.User;
 import cat.udl.eps.softarch.repository.AdvertisementRepository;
 import cat.udl.eps.softarch.repository.PrivateMessageRepository;
+import cat.udl.eps.softarch.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.core.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,13 +16,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.ZonedDateTime;
-import java.util.Set;
 
 @Component
 @RepositoryEventHandler(Purchase.class)
 public class PurchaseEventHandler {
     @Autowired private AdvertisementRepository advertisementRepository;
     @Autowired private PrivateMessageRepository privateMessageRepository;
+    @Autowired private UserRepository userRepository;
 
     private final String sellerNotificationTemplate = "Dear %s,\n\n" +
             "Your item %s has been sold.\n\n" +
@@ -43,17 +45,18 @@ public class PurchaseEventHandler {
     @PreAuthorize("hasRole('USER')")
     public void handlePurchasePreCreate(Purchase purchase) {
         String loggedInAs = SecurityContextHolder.getContext().getAuthentication().getName();
+        User purchaser = userRepository.findOne(loggedInAs);
 
         ZonedDateTime now = ZonedDateTime.now();
         purchase.setCreatedAt(now);
 
         // The current purchaser; buying through accepting an offer will have a different handler.
-        purchase.setPurchaser(loggedInAs);
+        purchase.setPurchaser(purchaser);
 
         // A product cannot be purchased by their owner.
         for (Advertisement advertisement: purchase.getAdvertisements()) {
             Advertisement dbAdvertisement = advertisementRepository.findOne(advertisement.getId());
-            Assert.isTrue(!loggedInAs.equals(dbAdvertisement.getOwner()), "You cannot buy your own product.");
+            Assert.isTrue(!purchaser.getUsername().equals(dbAdvertisement.getOwner()), "You cannot buy your own product.");
         }
 
 

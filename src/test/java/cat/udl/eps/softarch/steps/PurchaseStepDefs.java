@@ -118,7 +118,13 @@ public class PurchaseStepDefs  extends AbstractStepDefs {
 
     @And("^There is a purchase with purchaser \"([^\"]*)\"$")
     public void thereIsAPurchaseWithPurchaser(String purchaser) throws Throwable {
-        thereIsA("$.purchaser", purchaser);
+        String purchaserLocation = "/purchases/1/purchaser";
+
+        result = mockMvc.perform(get(purchaserLocation)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.uri", is("/users/" + purchaser)));
     }
 
     @And("^There is a purchase with date$")

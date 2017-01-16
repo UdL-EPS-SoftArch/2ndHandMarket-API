@@ -30,9 +30,21 @@ public class User implements UserDetails {
     private Date birthday;
     private String country;
     private String password;
+
     @JsonIdentityReference(alwaysAsId=true)
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Advertisement> wishes = new HashSet<>();
+
+    @OneToMany(mappedBy = "purchaser", fetch = FetchType.EAGER)
+    private Set<Purchase> purchases = new HashSet<>();
+
+    public Set<Purchase> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(Set<Purchase> purchases) {
+        this.purchases = purchases;
+    }
 
     public Set<Advertisement> getWishes() {
         return wishes;

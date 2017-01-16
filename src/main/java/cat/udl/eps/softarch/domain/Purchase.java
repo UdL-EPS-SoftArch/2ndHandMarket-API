@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.DecimalMin;
 import java.time.ZonedDateTime;
@@ -18,7 +19,8 @@ import java.util.Set;
 @JsonIgnoreProperties(value = {"purchaser", "createdAt", "total"}, allowGetters = true)
 public class Purchase extends UriEntity {
 
-    private String purchaser;
+    @ManyToOne
+    private User purchaser;
 
     @OneToMany(mappedBy = "purchase", cascade = CascadeType.ALL)
     private Set<Advertisement> advertisements = new HashSet<>();
@@ -30,11 +32,12 @@ public class Purchase extends UriEntity {
     @DecimalMin(message = "Total has to be bigger than 0.01", value = "0.01")
     private Double total;
 
-    public String getPurchaser() {
+
+    public User getPurchaser() {
         return purchaser;
     }
 
-    public void setPurchaser(String purchaser) {
+    public void setPurchaser(User purchaser) {
         this.purchaser = purchaser;
     }
 
@@ -42,7 +45,7 @@ public class Purchase extends UriEntity {
         return advertisements;
     }
 
-    public void setAdvertisement(Set<Advertisement> advertisement) {
+    public void setAdvertisements(Set<Advertisement> advertisement) {
         this.advertisements = advertisement;
     }
 
@@ -53,7 +56,6 @@ public class Purchase extends UriEntity {
     public void setCreatedAt(ZonedDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
     public double getTotal() {
         return total;
     }

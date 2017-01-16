@@ -57,7 +57,6 @@ public class Advertisement extends UriEntity{
     @ManyToOne
     private Purchase purchase;
 
-    public Set<User> getWishers() { return wishers; }
 
     /* technical product data */
     private String category;
@@ -76,6 +75,7 @@ public class Advertisement extends UriEntity{
     public String getOwner() {
         return owner;
     }
+    public Set<User> getWishers() { return wishers; }
 
     public ZonedDateTime getCreatedAt() {
         return createdAt;
