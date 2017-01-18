@@ -2,6 +2,7 @@ package cat.udl.eps.softarch.steps;
 
 import cat.udl.eps.softarch.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import cucumber.api.PendingException;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static cat.udl.eps.softarch.steps.AuthenticationStepDefs.authenticate;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -46,15 +48,6 @@ public class UserStepDefs extends AbstractStepDefs {
                 .build();
     }
 
-//    @Given("^There is an existing user with username \"([^\"]*)\" and password \"([^\"]*)\"$")
-//    public void iCreateAnUserWithNameAndLastname(String username, String password) throws Throwable {
-//        User user = new User();
-//        user.setUsername(username);
-//        user.setName(username);
-//        user.setPassword(passwordEncoder.encode(password));
-//        userRepository.save(user);
-//    }
-
     @And("^I can login with username \"([^\"]*)\" and password \"([^\"]*)\"$")
     public void iCanLoginWithUsernameAndPassword(String username, String password) throws Throwable {
         result = mockMvc.perform(
@@ -80,27 +73,39 @@ public class UserStepDefs extends AbstractStepDefs {
         String message = String.format("{\"username\":\"%s\",\"name\":\"%s\",\"password\":\"%s\"}",
                 username, username, password);
 
-        result = mockMvc.perform(
-                put("/users/{username}", username)
+        result = mockMvc.perform(put("/users/{username}", username)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(message)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isOk());
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(authenticate()))
+                        .andDo(print());
     }
 
     @When("^I create an user with username \"([^\"]*)\" and password \"([^\"]*)\"$")
     public void iCreateAnUserWithUsernameAndPassword(String username, String password) throws Throwable {
-        String message = String.format("{\"username\":\"%s\",\"name\":\"%s\",\"password\":\"%s\"}",
-                username, username, password);
+        iCreateAnUserWithUsernameAndPasswordAndDisplayName(username, password, "");
+    }
+
+    @When("^I create an user with username \"([^\"]*)\" and password \"([^\"]*)\" and display name \"([^\"]*)\"$")
+    public void iCreateAnUserWithUsernameAndPasswordAndDisplayName(String username, String password, String displayName) throws Throwable {
+        String message = String.format("{\"username\":\"%s\",\"name\":\"%s\",\"password\":\"%s\",\"displayName\":\"%s\"}",
+                username, username, password, displayName);
 
         result = mockMvc.perform(
                 post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(message)
                         .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isCreated());
+                .andDo(print());
+    }
+
+    @Then("^I delete username \"([^\"]*)\"$")
+    public void iDeleteUsername(String username) throws Throwable {
+        result = mockMvc.perform(delete("/users/{username}", username)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(authenticate()))
+                        .andDo(print());
     }
 
     @Then("^There is a registered user with username \"([^\"]*)\"$")
@@ -116,10 +121,15 @@ public class UserStepDefs extends AbstractStepDefs {
     @Then("^There is a registered user with display name \"([^\"]*)\"$")
     public void thereIsARegisteredUserWithDisplayName(String displayName) throws Throwable {
         result = mockMvc.perform(
-                get("/users/{username}", displayName)
+                get("/users/search/findByDisplayName?displayName={displayName}", displayName)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.displayName", is(displayName)));
+                .andExpect(jsonPath("$._embedded.users[0].displayName", is(displayName)));
+    }
+
+    @Then("^The user status is (\\d+)$")
+    public void theUserStatusIs(int status) throws Throwable {
+        result.andExpect(status().is(status));
     }
 }

@@ -1,5 +1,6 @@
 package cat.udl.eps.softarch.steps;
 
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
@@ -9,6 +10,13 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 public class AuthenticationStepDefs extends AbstractStepDefs {
     private static String currentUsername;
     private static String currentPassword;
+
+    @Before
+    public void setup() {
+        // Clear authentication credentials at the start of every test.
+        AuthenticationStepDefs.currentPassword = "";
+        AuthenticationStepDefs.currentUsername = "";
+    }
 
     static RequestPostProcessor authenticate() {
         return currentUsername!=null ? httpBasic(currentUsername, currentPassword) : anonymous();
